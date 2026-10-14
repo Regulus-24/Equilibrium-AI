@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>衡智 · Equilibrium AI</title><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/ledger.css"><link rel="stylesheet" href="/funds.css"></head>
+<body>
+<aside class="rail">
+<a class="brand" href="/" aria-label="衡智首页"><span class="symbol">衡</span><span>衡智<small>EQUILIBRIUM AI</small></span></a>
+<div class="rail-label">我的账户体验</div>
+<nav aria-label="主要页面">
+<button class="nav active" data-page="bookkeeping"><span>＋</span> 手动记账</button>
+<button class="nav" data-page="statistics"><span>⌁</span> 账单统计</button>
+<button class="nav" data-page="insights"><span>◎</span> 账单分析实验</button>
+<button class="nav" data-page="overview"><span>◫</span> 示例账单与资金</button>
+<button class="nav" data-page="fundtracking"><span>≋</span> 理财跟踪</button>
+<button class="nav" data-page="cards"><span>▤</span> 卡片管理</button>
+</nav>
+<div class="rail-bottom"><div class="team">金枢智能 <b>FinNexus</b></div><p>每一项结论有依据<br>每一次操作有回执</p><span class="version">体验原型 v0.1</span></div>
+</aside>
+<main>
+<header><span class="breadcrumb">个人银行助手 <span>/</span> <span id="page-title">手动记账</span></span><span class="mode"><i></i> 本机原型 · 无真实资金操作</span></header>
+<section class="intro"><div><p class="eyebrow">YOUR MONEY, IN PERSPECTIVE</p><h1>看清资金，再做决定。</h1><p class="muted">从一份账单开始，了解支出、比较条件，掌握卡片状态。</p></div><button class="quiet" id="feedback-open">留下体验反馈 ↗</button></section>
+<div class="prototype">本机研究原型，未接入大模型或真实银行。理财跟踪使用公开真实行情；实际手动记录与模拟记录分开保存，不执行真实买卖。</div>
+<div id="error" class="error" role="alert" hidden></div>
+<section id="bookkeeping" class="page">
+<div class="book-grid">
+<div class="panel book-entry">
+<p class="eyebrow">ONE ENTRY AT A TIME</p><h2 id="entry-title">记一笔，慢慢看清。</h2>
+<form id="entry-form">
+<fieldset class="kind-switch"><legend class="sr-only">收支类型</legend><label><input type="radio" name="entry-kind" value="expense" checked>支出</label><label><input type="radio" name="entry-kind" value="income">收入</label></fieldset>
+<label for="entry-amount">金额（元）</label><div class="amount-input"><span>¥</span><input id="entry-amount" type="text" inputmode="decimal" placeholder="0" maxlength="12" autocomplete="off" required aria-describedby="amount-help"></div><p id="amount-help" class="caption">最多 2 位小数，如 25、25.1、25.12。</p>
+<label for="entry-date">日期</label><input id="entry-date" type="date" required>
+<label for="entry-category">分类</label><select id="entry-category" required></select>
+<label id="custom-category-wrap" hidden>自定义类别<input id="entry-custom" type="text" maxlength="20" placeholder="例如：宠物" autocomplete="off"><span class="caption">保存后，下次可以直接选择。</span></label>
+<label for="entry-note">备注 <span class="caption">选填</span></label><textarea id="entry-note" maxlength="500" rows="3" placeholder="写下这一笔的用途……"></textarea>
+<div id="entry-error" class="error" role="alert" hidden></div><div class="tools"><button id="entry-save" class="primary" type="submit" disabled>保存这笔支出</button><button id="entry-cancel" class="quiet" type="button" hidden>取消编辑</button></div>
+</form></div>
+<div class="panel book-list">
+<div class="section-heading"><div><p class="eyebrow">YOUR MANUAL LEDGER</p><h2>我的账本</h2></div><label>查看月份<input id="ledger-month" type="month"></label></div>
+<p class="caption">仅统计手动记录，未接入银行。结余是所选月份的收入减支出，不是银行卡余额。</p>
+<div id="ledger-status" role="status" aria-live="polite"></div>
+<div class="tools"><button id="ledger-backup" class="quiet" type="button">备份账本</button><button id="ledger-restore" class="quiet" type="button">恢复账本</button><input id="ledger-backup-file" type="file" accept=".json,application/json" hidden></div>
+<p class="caption">页面可见时每 3 秒检查更新，切回页面也会更新。备份含全部月份和自定义分类；恢复会替换当前账本并自动保留恢复前的副本。</p>
+<div class="book-totals"><div>收入<strong id="manual-income">—</strong></div><div>支出<strong id="manual-expense">—</strong></div><div>收支结余<strong id="manual-balance">—</strong></div></div>
+<div id="manual-categories" class="manual-categories"></div>
+<div class="section-heading"><h3>记录查找 <small id="entry-count"></small></h3><button id="ledger-refresh" class="quiet" type="button">刷新账本</button></div>
+<div class="ledger-filters" role="search" aria-label="查找记账记录">
+<label class="ledger-search-label" for="ledger-search">搜索分类或备注<input id="ledger-search" type="search" maxlength="500" placeholder="例如：礼物、生日、猫粮" autocomplete="off"></label>
+<label for="ledger-scope">查找范围<select id="ledger-scope"><option value="month">所选月份</option><option value="all">全部月份</option></select></label>
+<label for="ledger-kind">收支类型<select id="ledger-kind"><option value="all">全部收支</option><option value="expense">只看支出</option><option value="income">只看收入</option></select></label>
+<button id="ledger-clear-filters" type="button" class="quiet">重置查找</button>
+</div>
+<p class="caption">上方金额和分类始终汇总所选月份；以下结果随查找条件变化。</p>
+<p id="ledger-results-summary" class="caption" role="status"></p>
+<div id="manual-entries" aria-live="polite"><div class="empty">正在读取本机账本……</div></div>
+</div></div>
+</section>
+<section id="statistics" class="page" hidden>
+<div class="panel stats-panel">
+<div class="section-heading"><div><p class="eyebrow">YOUR LEDGER, OVER TIME</p><h2>账单统计</h2></div><div class="stats-controls">
+<label>统计维度<select id="stats-mode"><option value="month">月度</option><option value="year">年度</option></select></label>
+<label id="stats-month-label">月份<input id="stats-month" type="month"></label>
+<label id="stats-year-label" hidden>年份<input id="stats-year" type="number" min="1" max="9999" step="1"></label>
+<label>图表与排行<select id="stats-kind"><option value="expense">支出</option><option value="income">收入</option></select></label>
+</div></div>
+<p id="stats-period" class="caption"></p>
+<div class="book-totals"><div>总收入<strong id="stats-income">—</strong></div><div>总支出<strong id="stats-expense">—</strong></div><div>收支结余<strong id="stats-balance">—</strong></div></div>
+<p id="stats-average"></p><p id="stats-summary" class="caption" role="status"></p>
+<section id="month-analysis" class="month-analysis" hidden>
+<h3 id="analysis-title">月度支出变化</h3>
+<p id="analysis-range" class="caption"></p><p id="analysis-caution" class="analysis-caution"></p>
+<div class="book-totals"><div>本期已记录<strong id="analysis-current">—</strong></div><div>上月整月已记录<strong id="analysis-previous">—</strong></div><div>增减金额<strong id="analysis-delta">—</strong></div></div>
+<p id="analysis-summary" role="status"></p><p id="analysis-contributions" class="caption"></p>
+<div id="analysis-categories"></div>
+<p class="caption">窄屏可左右滑动分类表，查看完整增减金额。</p>
+<div id="analysis-evidence" hidden><h4 id="analysis-evidence-title"></h4><div class="analysis-evidence-grid"><div><h4>本期记录</h4><div id="analysis-current-rows"></div></div><div><h4>上月整月记录</h4><div id="analysis-previous-rows"></div></div></div></div>
+<p class="caption">金额变化按已保存类别分解，不推断消费动机或是否合理；没有记录不等于没有真实收支。点击分类查看两期依据。</p>
+</section>
+<h3 id="stats-chart-title">支出趋势</h3>
+<div id="stats-chart" class="stats-chart"></div><p class="caption">窄屏可左右滑动查看完整折线图。</p><p id="stats-point" class="caption" aria-live="polite">点击或悬停图中节点查看金额，也可用 Tab 键选择节点。</p>
+<p class="caption">只统计已录入账本。已过去且未录入的日期显示记录金额为0，不代表真实收支为0；未来日期留空。结余不是银行卡余额。</p>
+<h3 id="stats-ranking-title">分类支出排行榜</h3><p class="caption">按金额从高到低排列；占比以所选期间该收支类型的总额为分母。百分比四舍五入后合计可能略有偏差。</p>
+<div id="stats-ranking"></div>
+<div id="stats-detail" hidden><h3 id="stats-detail-title"></h3><div id="stats-detail-rows"></div></div>
+</div></section>
+<section id="overview" class="page" hidden>
+<div class="overview-grid">
+<div class="panel ledger">
+<div class="section-heading"><div><p class="eyebrow">MONTHLY STATEMENT</p><h2>9 月，钱花在哪里？</h2></div><span class="tag">2026.09 · 示例</span></div>
+<div class="net"><span>净支出 <small>已扣除退款</small></span><strong id="expense">—</strong></div>
+<div class="distribution" id="distribution" aria-label="支出分类占比"></div>
+<div id="categories" class="categories"></div>
+<div class="ledger-foot"><span>工资收入 <b id="income">—</b></span><span>自有账户划转不计收入</span></div>
+<details><summary>查看计算依据与交易明细</summary><p class="caption" id="summary-note"></p><div class="table-scroll"><table><thead><tr><th>日期</th><th>交易</th><th>分类</th><th>金额</th></tr></thead><tbody id="transactions"></tbody></table></div></details>
+</div>
+<div class="right-column">
+<div class="panel reserve"><p class="eyebrow">AVAILABLE BALANCE</p><h2>当前可用余额</h2><strong id="balance">—</strong><p>余额是合成账户当前状态，<br>不等于本月收入减支出。</p><button class="primary" data-page="wealth">比较理财条件 <span>↗</span></button><small>先明确用款时间和风险，再讨论产品。</small></div>
+<div class="panel attention"><span class="tag amber">等你核实</span><h3>这笔扣费，你认识吗？</h3><p>STREAM SERVICE（示例商户）</p><div class="attention-amount">¥129.00 <small>09 月 18 日 · 尾号 0428</small></div><p class="caption">演示预设的待核实交易，并非已识别的欺诈。可先核对商户及订阅记录。</p><button class="text-button" data-page="cards">查看关联卡片 →</button></div>
+</div></div>
+</section>
+<section id="fundtracking" class="page" hidden>
+<div class="panel">
+<p class="eyebrow">REAL FUNDS · LOCAL SCHEDULER</p><h2>理财产品跟踪</h2>
+<p class="muted">首批五只真实货币基金。选中即加入每日跟踪，取消只停止更新，保留历史和交易记录。当前渠道在售状态尚未核实。</p>
+<form id="fund-settings"><div id="fund-watchlist" class="fund-checks"></div><div class="fund-controls"><label>每天更新时间（北京时间）<input id="fund-schedule-time" type="time" required value="09:00"></label><label class="check"><input id="fund-schedule-enabled" type="checkbox">启用衡智服务端定时更新</label><button class="primary" type="submit">保存跟踪设置</button><button id="fund-sync" class="quiet" type="button">立即更新已跟踪产品</button></div></form>
+<p id="fund-schedule-state" class="fund-schedule-line" role="status"></p><div id="fund-error" class="error" role="alert" hidden></div>
+<div id="fund-cards" class="fund-status-grid"></div><details><summary>服务端更新记录</summary><div id="fund-runs"></div></details>
+</div>
+<div class="panel" style="margin-top:20px">
+<div class="fund-controls"><label>选择基金<select id="fund-select"></select></label><label>记录账户<select id="fund-mode"><option value="actual">实际手动记录</option><option value="simulation">模拟记录</option></select></label></div>
+<h2 id="fund-detail-title">基金详情</h2><p id="fund-source" class="caption"></p>
+<div class="fund-kpis"><div>最新万份收益<strong id="fund-per10k">—</strong></div><div>七日年化<strong id="fund-annual7">—</strong></div><div>所选区间累计收益率（测算）<strong id="fund-return">—</strong></div><div>持有以来参考损益（估算）<strong id="fund-profit">—</strong></div></div>
+<div class="tools fund-period" aria-label="基金时间区间"><button class="quiet" data-fund-months="1" aria-pressed="true">近1个月</button><button class="quiet" data-fund-months="3" aria-pressed="false">近3个月</button><button class="quiet" data-fund-months="6" aria-pressed="false">近6个月</button><button class="quiet" data-fund-months="12" aria-pressed="false">近1年</button></div>
+<div class="fund-controls"><label>图表指标<select id="fund-metric"><option value="cumulative">累计收益率（每日再投资测算）</option><option value="daily">日收益率（万份收益换算）</option><option value="income">万份收益</option><option value="annual">七日年化</option><option value="nav">单位净值（来源未披露）</option><option value="personal">个人累计参考损益（元）</option></select></label></div>
+<p id="fund-period-label" class="caption"></p><div id="fund-chart" class="fund-chart"></div><p id="fund-chart-readout" class="caption" aria-live="polite"></p>
+<p class="caption">货币基金的收益分配不是普通基金单位净值涨跌；七日年化不是实际日收益。区间累计收益按公开万份收益逐日再投资测算，不计个人取整差异；缺失日期不填0。时间区间只影响曲线，持有以来参考损益仍使用全部已确认记录。</p>
+<p id="fund-mode-note" class="fund-warning"></p>
+<details><summary>查看所选区间真实收益数据</summary><div class="table-scroll fund-history"><table><thead><tr><th>收益日期</th><th>万份收益（元）</th><th>七日年化</th><th>日收益率</th><th>区间累计测算</th></tr></thead><tbody id="fund-history-body"></tbody></table></div></details>
+<div class="fund-grid" style="margin-top:25px"><div><h3>买卖记录与节点</h3><p class="caption">实际与模拟独立保存。待确认记录只作标记，不计入持仓。请从首次买入或已知期初持仓开始录入，记录不全时损益不能代表账户实际情况。</p><div class="table-scroll"><table class="fund-trades"><thead><tr><th>生效日期</th><th>操作</th><th>现金（元）</th><th>份额</th><th>备注</th><th>操作</th></tr></thead><tbody id="fund-trades"></tbody></table></div></div>
+<div><h3 id="fund-trade-mode-label">新增记录</h3><form id="fund-trade-form" class="fund-trade-grid"><label>操作<select id="fund-trade-kind"><option value="buy">买入</option><option value="sell">卖出</option></select></label><label>状态<select id="fund-trade-status"><option value="confirmed">已确认</option><option value="pending">待确认</option></select></label><label>收益生效日期<input id="fund-trade-date" type="date" required></label><label>确认份额<input id="fund-trade-units" type="text" inputmode="decimal" required placeholder="最多6位小数"></label><label class="wide">实际付出／收到的现金（已含费用）<input id="fund-trade-amount" type="text" inputmode="decimal" required placeholder="金额最多2位小数"></label><label class="wide">备注<textarea id="fund-trade-note" maxlength="500" rows="2"></textarea></label><p class="caption wide">生效日期：买入从该日开始计收益，卖出从该日停止计收益；根据平台实际确认规则填写。待确认时份额可先记申请数量，确认后编辑。</p><button id="fund-trade-submit" class="primary" type="submit">保存记录</button><button id="fund-trade-cancel" class="quiet" type="button" hidden>取消编辑</button></form></div></div>
+</div></section>
+<section id="wealth" class="page" hidden>
+<div class="panel"><div class="section-heading"><div><p class="eyebrow">UNDERSTAND BEFORE ACTING</p><h2>先明确两项条件</h2></div><span class="tag">条件比较 · 不提供申购</span></div><p class="muted">用两款虚构产品理解期限与本金风险。这里不是完整风险测评，也不会自动给出购买建议。</p>
+<form id="compare-form" class="compare-form"><label>这笔钱最晚什么时候需要用？<select id="days"><option value="30">30 天后</option><option value="90">90 天后</option></select></label><label>能否承受这笔资金的本金损失？<select id="loss"><option value="no">不能承受</option><option value="yes">可以接受存在本金损失的可能</option></select></label><button class="primary" type="submit">查看比较结果</button></form>
+<div id="products" class="products" aria-live="polite"><div class="empty">选择条件后，查看产品为什么被保留或排除。</div></div>
+<div class="note">没有合适产品，也是有效结果。下一版会补充正式测评状态、完整产品条件及沙箱订单；当前不能据此投资。</div>
+</div></section>
+<section id="cards" class="page" hidden>
+<div class="cards-grid"><div class="panel"><p class="eyebrow">CARD CONTROL</p><h2>控制卡片前，先看清影响</h2><div class="bank-card"><div>FINNEXUS <span>DEMO DEBIT</span></div><div class="card-chip"></div><strong>•••• &nbsp; •••• &nbsp; •••• &nbsp; 0428</strong><div class="card-footer"><span>示例借记卡</span><b id="card-status">—</b></div></div><p class="caption">关联交易：09 月 18 日，STREAM SERVICE，¥129.00。核对后仍不认识，可考虑临时锁卡并联系银行。</p><button class="primary" id="preview-lock">预览临时锁卡</button></div>
+<div class="panel"><p class="eyebrow">ACTION & RECEIPT</p><h2>操作结果</h2><div id="receipt" aria-live="polite"><p class="muted">尚未操作。预览不会改变卡片状态。</p></div><div class="note">本演示将“临时锁卡”定义为阻止该模拟卡片发起新的消费请求；既有扣款不撤回。真实银行影响范围以其规则为准。</div></div></div>
+</section>
+<section id="insights" class="page" hidden>
+<div class="panel"><h2>账单分析 → 资金条件 → 真实基金资料</h2><p class="caption">离线规则实验，无大模型调用。报告只给出有记录依据的事实和待核查线索。</p>
+<form id="insight-form" class="fund-controls"><label>报告期间（月份或年份）<input id="insight-period" required placeholder="2026-09 或 2026"></label><button class="primary" type="submit">生成／刷新报告</button><button id="insight-export" class="quiet" type="button" disabled>导出报告 JSON</button></form>
+<p id="insight-error" class="error" hidden role="alert"></p><p id="insight-status" class="caption"></p><div id="insight-report"></div>
+<h3>待核查候选与反馈</h3><div id="insight-flags"><p>先生成报告。</p></div></div>
+<div class="panel"><h2>确认资金条件</h2><p class="caption">月结余不代表当前现金。请填写当前可支配现金（尚未扣除下方预留额），将日常开销、近期付款和应急资金合并为不重叠的预留总额。这里只生成资料比较，不执行买卖。</p>
+<form id="insight-cash" class="fund-trade-grid"><label>当前现金（元）<input id="insight-available" inputmode="decimal" required></label><label>需预留总额（元）<input id="insight-reserve" inputmode="decimal" required></label><label>拟投入金额（元）<input id="insight-amount" inputmode="decimal" required></label><label>预计用款日期<input id="insight-need" type="date" required></label><label class="wide">能否接受本金损失<select id="insight-loss"><option value="no">不能接受</option><option value="yes">可以接受，但仍需进一步风险评估</option></select></label><label class="wide check"><input id="insight-confirm" type="checkbox" required>我已核对今天的现金与预留金额，预留没有重复计算。</label><button id="insight-compare" class="primary" type="submit" disabled>比较五只基金资料</button></form><div id="insight-preview"></div></div>
+</section>
+<section class="evidence panel"><details><summary>查看本次体验的操作记录 <span>计划 → 确认 → 执行 → 核验</span></summary><div id="events"></div><div class="tools"><button class="quiet" id="export-evidence">导出模拟运行记录</button><button class="quiet" id="export-feedback">导出本机反馈</button><button class="quiet danger" id="reset">重置模拟账户</button></div><p class="caption">仅保存在本机。本地日志不代表防篡改审计或银行级安全；重置账户会清除本轮运行记录，已提交反馈保留。</p></details></section>
+<footer><span>金枢智能 FinNexus · 2026 FinTechathon</span><span>本周目标：让用户独立走完一次可核验的操作</span></footer>
+</main>
+<dialog id="confirm-dialog"><form method="dialog"><button class="close" aria-label="关闭">×</button></form><p class="eyebrow">REVIEW BEFORE CONFIRMING</p><h2>临时锁定尾号 0428？</h2><p>模拟卡片将暂停新的消费请求，既有交易不会被撤回。这不是正式挂失。</p><dl><div><dt>操作对象</dt><dd>示例借记卡 · 0428</dd></div><div><dt>状态变化</dt><dd>正常使用 → 临时锁定</dd></div><div><dt>资金影响</dt><dd>无扣款、无退款</dd></div><div><dt>确认有效期</dt><dd>5 分钟</dd></div></dl><label class="check"><input type="checkbox" id="consent">我已了解影响，确认执行这项模拟操作。</label><div id="confirm-error" class="error" hidden role="alert"></div><div class="dialog-actions"><button class="quiet" id="cancel-lock">暂不操作</button><button class="primary" id="approve-lock" disabled>确认模拟锁卡</button></div><p class="caption">本版确认用于流程验证，不是真实银行身份认证。</p></dialog>
+<dialog id="feedback-dialog"><form method="dialog"><button class="close" aria-label="关闭">×</button></form><p class="eyebrow">HELP SHAPE THE NEXT VERSION</p><h2>哪一步有用，哪一步卡住？</h2><p class="muted">不需要姓名、联系方式或真实账单。反馈仅保存到这台电脑，不会对外发送。</p><form id="feedback-form"><label>这版流程对你有帮助吗？<select id="useful"><option value="maybe">还不确定</option><option value="yes">有帮助</option><option value="no">没有帮助</option></select></label><label>你期待什么，实际遇到了什么？<textarea id="feedback-note" rows="5" maxlength="1000" required placeholder="例如：我不清楚临时锁卡能不能追回那笔钱……"></textarea></label><p id="feedback-message" role="status"></p><button class="primary" type="submit">保存反馈到本机</button></form></dialog>
+<script src="/app.js"></script><script src="/statistics.js"></script><script src="/ledger.js"></script><script src="/funds.js"></script><script src="/insights.js"></script></body></html>

@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/equilibrium/bill-analysis-facts-v1",
+  "title": "衡智账单分析事实层 v1",
+  "description": "由服务端根据同一账本快照计算的事实和证据。模型只能读取此层，不负责金额计算。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "snapshot",
+    "period",
+    "transactions",
+    "facts",
+    "comparison",
+    "categories",
+    "data_quality"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "bill-analysis-facts-v1"
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ledger_version", "as_of", "source", "scope"],
+      "properties": {
+        "ledger_version": {
+          "type": "string",
+          "minLength": 1,
+          "description": "账本内容哈希；所有事实、证据和后续模型输入必须来自这个版本。"
+        },
+        "as_of": {
+          "type": "string",
+          "format": "date"
+        },
+        "source": {
+          "enum": ["manual_ledger", "synthetic_bank_example"]
+        },
+        "scope": {
+          "const": "recorded_transactions_only",
+          "description": "仅表示已录入记录，不代表完整银行流水。"
+        }
+      }
+    },
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requested", "start", "end", "partial", "current_days"],
+      "properties": {
+        "requested": {
+          "type": "string",
+          "pattern": "^[0-9]{4}(?:-(?:0[1-9]|1[0-2]))?$"
+        },
+        "start": {
+          "type": "string",
+          "format": "date"
+        },
+        "end": {
+          "type": "string",
+          "format": "date"
+        },
+        "partial": {
+          "type": "boolean",
+          "description": "当前期间尚未结束时为 true；不得据此预测期末金额。"
+        },
+        "current_days": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "previous": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": ["start", "end", "days", "status", "basis"],
+          "properties": {
+            "start": {"type": ["string", "null"], "format": "date"},
+            "end": {"type": ["string", "null"], "format": "date"},
+            "days": {"type": "integer", "minimum": 0},
+            "status": {
+              "enum": ["ready", "missing_current", "missing_previous", "not_applicable"]
+            },
+            "basis": {
+              "enum": [
+                "whole_period_vs_whole_period",
+                "current_to_date_vs_previous_whole_period",
+                "none"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "transactions": {
+      "type": "array",
+      "description": "已纳入本期或比较期的逐笔记录；金额单位始终为分。",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "revision", "date", "kind", "amount_cents", "category", "note", "source"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-]{1,64}$"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "kind": {
+            "enum": ["income", "expense"],
+            "description": "income 计入收入，expense 计入支出；不能从备注猜测其他会计类型。"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "正整数分；不要使用浮点金额。"
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "merchant": {
+            "type": ["string", "null"],
+            "maxLength": 200,
+            "description": "当前手动账本没有独立商户字段；缺失时为 null，不从备注强行提取。"
+          },
+          "source": {
+            "enum": ["manual_ledger", "synthetic_bank_example"]
+          }
+        }
+      }
+    },
+    "facts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "income_cents",
+        "expense_cents",
+        "net_cents",
+        "income_record_count",
+        "expense_record_count",
+        "savings_rate_basis_points",
+        "available_balance_cents"
+      ],
+      "properties": {
+        "income_cents": {"type": "integer", "minimum": 0},
+        "expense_cents": {"type": "integer", "minimum": 0},
+        "net_cents": {
+          "type": "integer",
+          "description": "已记录收入减已记录支出；不是银行余额，也不是可投资金额。"
+        },
+        "income_record_count": {"type": "integer", "minimum": 0},
+        "expense_record_count": {"type": "integer", "minimum": 0},
+        "savings_rate_basis_points": {
+          "type": ["integer", "null"],
+          "minimum": -1000000,
+          "description": "储蓄率乘以 100 后取整；收入为 0 或缺失时为 null。"
+        },
+        "available_balance_cents": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "description": "只有用户或受信系统明确提供时才填写；绝不能从 net_cents 推算。"
+        }
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "income", "expense"],
+      "properties": {
+        "status": {
+          "enum": ["ready", "missing_current", "missing_previous", "not_applicable"]
+        },
+        "income": {"$ref": "#/$defs/comparison_value"},
+        "expense": {"$ref": "#/$defs/comparison_value"}
+      }
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "category", "amount_cents", "share_basis_points", "transaction_ids"],
+        "properties": {
+          "kind": {"enum": ["income", "expense"]},
+          "category": {"type": "string", "minLength": 1, "maxLength": 20},
+          "amount_cents": {"type": "integer", "minimum": 0},
+          "share_basis_points": {"type": ["integer", "null"], "minimum": 0},
+          "transaction_ids": {
+            "type": "array",
+            "items": {"type": "string"},
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "data_quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "conclusion_level",
+        "has_recorded_income",
+        "has_recorded_expense",
+        "has_explicit_available_balance",
+        "has_prior_comparable_period",
+        "missing_fields",
+        "warnings",
+        "insufficient_history_ids"
+      ],
+      "properties": {
+        "conclusion_level": {
+          "enum": ["facts_only", "conditional_comparison", "insufficient_data"]
+        },
+        "has_recorded_income": {"type": "boolean"},
+        "has_recorded_expense": {"type": "boolean"},
+        "has_explicit_available_balance": {"type": "boolean"},
+        "has_prior_comparable_period": {"type": "boolean"},
+        "missing_fields": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "warnings": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "insufficient_history_ids": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        }
+      }
+    }
+  },
+  "$defs": {
+    "comparison_value": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["current_cents", "previous_cents", "delta_cents", "percent_basis_points"],
+      "properties": {
+        "current_cents": {"type": "integer", "minimum": 0},
+        "previous_cents": {"type": "integer", "minimum": 0},
+        "delta_cents": {"type": ["integer", "null"]},
+        "percent_basis_points": {"type": ["integer", "null"]}
+      }
+    }
+  }
+}

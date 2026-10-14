@@ -1,0 +1,1550 @@
+[
+  {
+    "id": "amount-00",
+    "family": "amount",
+    "split": "dev",
+    "index": 0,
+    "entries": [
+      {
+        "id": "h0",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 300000,
+        "date": "2026-08-01",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h1",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 300000,
+        "date": "2026-08-02",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h2",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 300000,
+        "date": "2026-08-03",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h3",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 300000,
+        "date": "2026-08-04",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h4",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 300000,
+        "date": "2026-08-05",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h5",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 300000,
+        "date": "2026-08-06",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h6",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 300000,
+        "date": "2026-08-07",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "target",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 300000,
+        "date": "2026-09-20",
+        "category": "住房",
+        "note": "日常"
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "amount-01",
+    "family": "amount",
+    "split": "dev",
+    "index": 1,
+    "entries": [
+      {
+        "id": "h0",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2100,
+        "date": "2026-08-01",
+        "category": "旅行",
+        "note": "历史"
+      },
+      {
+        "id": "h1",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2100,
+        "date": "2026-08-02",
+        "category": "旅行",
+        "note": "历史"
+      },
+      {
+        "id": "target",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 201000,
+        "date": "2026-09-20",
+        "category": "旅行",
+        "note": "日常"
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "amount-02",
+    "family": "amount",
+    "split": "dev",
+    "index": 2,
+    "entries": [
+      {
+        "id": "h0",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2200,
+        "date": "2026-08-01",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h1",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2200,
+        "date": "2026-08-02",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h2",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2200,
+        "date": "2026-08-03",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h3",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2200,
+        "date": "2026-08-04",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h4",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2200,
+        "date": "2026-08-05",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h5",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2200,
+        "date": "2026-08-06",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h6",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2200,
+        "date": "2026-08-07",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "target",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 31400,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "日常"
+      }
+    ],
+    "expected": true
+  },
+  {
+    "id": "amount-03",
+    "family": "amount",
+    "split": "dev",
+    "index": 3,
+    "entries": [
+      {
+        "id": "h0",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 303000,
+        "date": "2026-08-01",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h1",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 303000,
+        "date": "2026-08-02",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h2",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 303000,
+        "date": "2026-08-03",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h3",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 303000,
+        "date": "2026-08-04",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h4",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 303000,
+        "date": "2026-08-05",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h5",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 303000,
+        "date": "2026-08-06",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h6",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 303000,
+        "date": "2026-08-07",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "target",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 303000,
+        "date": "2026-09-20",
+        "category": "住房",
+        "note": "日常"
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "amount-04",
+    "family": "amount",
+    "split": "dev",
+    "index": 4,
+    "entries": [
+      {
+        "id": "h0",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2400,
+        "date": "2026-08-01",
+        "category": "旅行",
+        "note": "历史"
+      },
+      {
+        "id": "h1",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2400,
+        "date": "2026-08-02",
+        "category": "旅行",
+        "note": "历史"
+      },
+      {
+        "id": "target",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 204000,
+        "date": "2026-09-20",
+        "category": "旅行",
+        "note": "日常"
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "amount-05",
+    "family": "amount",
+    "split": "dev",
+    "index": 5,
+    "entries": [
+      {
+        "id": "h0",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2500,
+        "date": "2026-08-01",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h1",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2500,
+        "date": "2026-08-02",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h2",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2500,
+        "date": "2026-08-03",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h3",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2500,
+        "date": "2026-08-04",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h4",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2500,
+        "date": "2026-08-05",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h5",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2500,
+        "date": "2026-08-06",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h6",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2500,
+        "date": "2026-08-07",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "target",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 33500,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "日常"
+      }
+    ],
+    "expected": true
+  },
+  {
+    "id": "amount-06",
+    "family": "amount",
+    "split": "validation",
+    "index": 6,
+    "entries": [
+      {
+        "id": "h0",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 306000,
+        "date": "2026-08-01",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h1",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 306000,
+        "date": "2026-08-02",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h2",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 306000,
+        "date": "2026-08-03",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h3",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 306000,
+        "date": "2026-08-04",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h4",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 306000,
+        "date": "2026-08-05",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h5",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 306000,
+        "date": "2026-08-06",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h6",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 306000,
+        "date": "2026-08-07",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "target",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 306000,
+        "date": "2026-09-20",
+        "category": "住房",
+        "note": "日常"
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "amount-07",
+    "family": "amount",
+    "split": "validation",
+    "index": 7,
+    "entries": [
+      {
+        "id": "h0",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2700,
+        "date": "2026-08-01",
+        "category": "旅行",
+        "note": "历史"
+      },
+      {
+        "id": "h1",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2700,
+        "date": "2026-08-02",
+        "category": "旅行",
+        "note": "历史"
+      },
+      {
+        "id": "target",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 207000,
+        "date": "2026-09-20",
+        "category": "旅行",
+        "note": "日常"
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "amount-08",
+    "family": "amount",
+    "split": "validation",
+    "index": 8,
+    "entries": [
+      {
+        "id": "h0",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2800,
+        "date": "2026-08-01",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h1",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2800,
+        "date": "2026-08-02",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h2",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2800,
+        "date": "2026-08-03",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h3",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2800,
+        "date": "2026-08-04",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h4",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2800,
+        "date": "2026-08-05",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h5",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2800,
+        "date": "2026-08-06",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h6",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 2800,
+        "date": "2026-08-07",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "target",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 35600,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "日常"
+      }
+    ],
+    "expected": true
+  },
+  {
+    "id": "amount-09",
+    "family": "amount",
+    "split": "holdout",
+    "index": 9,
+    "entries": [
+      {
+        "id": "h0",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 309000,
+        "date": "2026-08-01",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h1",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 309000,
+        "date": "2026-08-02",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h2",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 309000,
+        "date": "2026-08-03",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h3",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 309000,
+        "date": "2026-08-04",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h4",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 309000,
+        "date": "2026-08-05",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h5",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 309000,
+        "date": "2026-08-06",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "h6",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 309000,
+        "date": "2026-08-07",
+        "category": "住房",
+        "note": "历史"
+      },
+      {
+        "id": "target",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 309000,
+        "date": "2026-09-20",
+        "category": "住房",
+        "note": "日常"
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "amount-10",
+    "family": "amount",
+    "split": "holdout",
+    "index": 10,
+    "entries": [
+      {
+        "id": "h0",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 3000,
+        "date": "2026-08-01",
+        "category": "旅行",
+        "note": "历史"
+      },
+      {
+        "id": "h1",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 3000,
+        "date": "2026-08-02",
+        "category": "旅行",
+        "note": "历史"
+      },
+      {
+        "id": "target",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 210000,
+        "date": "2026-09-20",
+        "category": "旅行",
+        "note": "日常"
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "amount-11",
+    "family": "amount",
+    "split": "holdout",
+    "index": 11,
+    "entries": [
+      {
+        "id": "h0",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 3100,
+        "date": "2026-08-01",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h1",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 3100,
+        "date": "2026-08-02",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h2",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 3100,
+        "date": "2026-08-03",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h3",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 3100,
+        "date": "2026-08-04",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h4",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 3100,
+        "date": "2026-08-05",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h5",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 3100,
+        "date": "2026-08-06",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "h6",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 3100,
+        "date": "2026-08-07",
+        "category": "餐饮",
+        "note": "历史"
+      },
+      {
+        "id": "target",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 37700,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "日常"
+      }
+    ],
+    "expected": true
+  },
+  {
+    "id": "duplicate-00",
+    "family": "duplicate",
+    "split": "dev",
+    "index": 0,
+    "entries": [
+      {
+        "id": "a",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5000,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "午餐"
+      },
+      {
+        "id": "b",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5000,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "午餐"
+      }
+    ],
+    "expected": true
+  },
+  {
+    "id": "duplicate-01",
+    "family": "duplicate",
+    "split": "dev",
+    "index": 1,
+    "entries": [
+      {
+        "id": "a",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5100,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "午餐"
+      },
+      {
+        "id": "b",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5100,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "晚餐"
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "duplicate-02",
+    "family": "duplicate",
+    "split": "dev",
+    "index": 2,
+    "entries": [
+      {
+        "id": "a",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5200,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": ""
+      },
+      {
+        "id": "b",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5200,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": ""
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "duplicate-03",
+    "family": "duplicate",
+    "split": "dev",
+    "index": 3,
+    "entries": [
+      {
+        "id": "a",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5300,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "午餐"
+      },
+      {
+        "id": "b",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5300,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "午餐"
+      }
+    ],
+    "expected": true
+  },
+  {
+    "id": "duplicate-04",
+    "family": "duplicate",
+    "split": "dev",
+    "index": 4,
+    "entries": [
+      {
+        "id": "a",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5400,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "午餐"
+      },
+      {
+        "id": "b",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5400,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "晚餐"
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "duplicate-05",
+    "family": "duplicate",
+    "split": "dev",
+    "index": 5,
+    "entries": [
+      {
+        "id": "a",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5500,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": ""
+      },
+      {
+        "id": "b",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5500,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": ""
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "duplicate-06",
+    "family": "duplicate",
+    "split": "validation",
+    "index": 6,
+    "entries": [
+      {
+        "id": "a",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5600,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "午餐"
+      },
+      {
+        "id": "b",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5600,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "午餐"
+      }
+    ],
+    "expected": true
+  },
+  {
+    "id": "duplicate-07",
+    "family": "duplicate",
+    "split": "validation",
+    "index": 7,
+    "entries": [
+      {
+        "id": "a",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5700,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "午餐"
+      },
+      {
+        "id": "b",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5700,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "晚餐"
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "duplicate-08",
+    "family": "duplicate",
+    "split": "validation",
+    "index": 8,
+    "entries": [
+      {
+        "id": "a",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5800,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": ""
+      },
+      {
+        "id": "b",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5800,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": ""
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "duplicate-09",
+    "family": "duplicate",
+    "split": "holdout",
+    "index": 9,
+    "entries": [
+      {
+        "id": "a",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5900,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "午餐"
+      },
+      {
+        "id": "b",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 5900,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "午餐"
+      }
+    ],
+    "expected": true
+  },
+  {
+    "id": "duplicate-10",
+    "family": "duplicate",
+    "split": "holdout",
+    "index": 10,
+    "entries": [
+      {
+        "id": "a",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 6000,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "午餐"
+      },
+      {
+        "id": "b",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 6000,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": "晚餐"
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "duplicate-11",
+    "family": "duplicate",
+    "split": "holdout",
+    "index": 11,
+    "entries": [
+      {
+        "id": "a",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 6100,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": ""
+      },
+      {
+        "id": "b",
+        "revision": 1,
+        "kind": "expense",
+        "cents": 6100,
+        "date": "2026-09-20",
+        "category": "餐饮",
+        "note": ""
+      }
+    ],
+    "expected": false
+  },
+  {
+    "id": "funding-00",
+    "family": "funding",
+    "split": "dev",
+    "index": 0,
+    "funding": {
+      "available_cents": 1000000,
+      "reserve_cents": 300000,
+      "amount_cents": 600000,
+      "accept_loss": true,
+      "need_date": "2026-10-01",
+      "confirmed_on": "2026-09-29"
+    },
+    "expected": "ready_for_comparison",
+    "limit": 700000
+  },
+  {
+    "id": "funding-01",
+    "family": "funding",
+    "split": "dev",
+    "index": 1,
+    "funding": {
+      "available_cents": 1000000,
+      "reserve_cents": 300000,
+      "amount_cents": 700001,
+      "accept_loss": true,
+      "need_date": "2026-10-01",
+      "confirmed_on": "2026-09-29"
+    },
+    "expected": "blocked",
+    "limit": 700000
+  },
+  {
+    "id": "funding-02",
+    "family": "funding",
+    "split": "dev",
+    "index": 2,
+    "funding": {
+      "available_cents": 50000,
+      "reserve_cents": 60000,
+      "amount_cents": 100,
+      "accept_loss": true,
+      "need_date": "2026-10-01",
+      "confirmed_on": "2026-09-29"
+    },
+    "expected": "blocked",
+    "limit": 0
+  },
+  {
+    "id": "funding-03",
+    "family": "funding",
+    "split": "dev",
+    "index": 3,
+    "funding": {
+      "available_cents": 100000,
+      "reserve_cents": 0,
+      "amount_cents": 0,
+      "accept_loss": true,
+      "need_date": "2026-10-01",
+      "confirmed_on": "2026-09-29"
+    },
+    "expected": "blocked",
+    "limit": 100000
+  },
+  {
+    "id": "funding-04",
+    "family": "funding",
+    "split": "dev",
+    "index": 4,
+    "funding": {
+      "available_cents": 100000,
+      "reserve_cents": 10000,
+      "amount_cents": 100,
+      "accept_loss": false,
+      "need_date": "2026-10-01",
+      "confirmed_on": "2026-09-29"
+    },
+    "expected": "blocked",
+    "limit": 90000
+  },
+  {
+    "id": "funding-05",
+    "family": "funding",
+    "split": "dev",
+    "index": 5,
+    "funding": {
+      "available_cents": 100000,
+      "reserve_cents": 10000,
+      "amount_cents": 100,
+      "accept_loss": true,
+      "need_date": "2026-10-01",
+      "confirmed_on": "2026-09-28"
+    },
+    "expected": "information_needed",
+    "limit": null
+  },
+  {
+    "id": "funding-06",
+    "family": "funding",
+    "split": "validation",
+    "index": 6,
+    "funding": {
+      "available_cents": 765432,
+      "reserve_cents": 123456,
+      "amount_cents": 641976,
+      "accept_loss": true,
+      "need_date": "2026-12-01",
+      "confirmed_on": "2026-09-29"
+    },
+    "expected": "ready_for_comparison",
+    "limit": 641976
+  },
+  {
+    "id": "funding-07",
+    "family": "funding",
+    "split": "validation",
+    "index": 7,
+    "funding": {
+      "available_cents": 765432,
+      "reserve_cents": 123456,
+      "amount_cents": 641977,
+      "accept_loss": true,
+      "need_date": "2026-12-01",
+      "confirmed_on": "2026-09-29"
+    },
+    "expected": "blocked",
+    "limit": 641976
+  },
+  {
+    "id": "funding-08",
+    "family": "funding",
+    "split": "validation",
+    "index": 8,
+    "funding": {
+      "available_cents": 99999,
+      "reserve_cents": 1,
+      "amount_cents": 1,
+      "accept_loss": true,
+      "need_date": "2026-09-28",
+      "confirmed_on": "2026-09-29"
+    },
+    "expected": "blocked",
+    "limit": 99998
+  },
+  {
+    "id": "funding-09",
+    "family": "funding",
+    "split": "holdout",
+    "index": 9,
+    "funding": {
+      "available_cents": 12345,
+      "reserve_cents": 12344,
+      "amount_cents": 1,
+      "accept_loss": true,
+      "need_date": "2026-09-29",
+      "confirmed_on": "2026-09-29"
+    },
+    "expected": "ready_for_comparison",
+    "limit": 1
+  },
+  {
+    "id": "funding-10",
+    "family": "funding",
+    "split": "holdout",
+    "index": 10,
+    "funding": {
+      "available_cents": 20,
+      "reserve_cents": 20,
+      "amount_cents": 1,
+      "accept_loss": true,
+      "need_date": "2026-10-01",
+      "confirmed_on": "2026-09-29"
+    },
+    "expected": "blocked",
+    "limit": 0
+  },
+  {
+    "id": "funding-11",
+    "family": "funding",
+    "split": "holdout",
+    "index": 11,
+    "funding": {
+      "available_cents": 100000,
+      "reserve_cents": 0,
+      "amount_cents": 1,
+      "accept_loss": true,
+      "need_date": "2026-10-01",
+      "confirmed_on": "2026-09-27"
+    },
+    "expected": "information_needed",
+    "limit": null
+  },
+  {
+    "id": "products-00",
+    "family": "products",
+    "split": "dev",
+    "index": 0,
+    "variant": "missing",
+    "expected": "information_needed"
+  },
+  {
+    "id": "products-01",
+    "family": "products",
+    "split": "dev",
+    "index": 1,
+    "variant": "failed",
+    "expected": "information_needed"
+  },
+  {
+    "id": "products-02",
+    "family": "products",
+    "split": "dev",
+    "index": 2,
+    "variant": "stale",
+    "expected": "information_needed"
+  },
+  {
+    "id": "products-03",
+    "family": "products",
+    "split": "dev",
+    "index": 3,
+    "variant": "gap",
+    "expected": "information_needed"
+  },
+  {
+    "id": "products-04",
+    "family": "products",
+    "split": "dev",
+    "index": 4,
+    "variant": "missing",
+    "expected": "information_needed"
+  },
+  {
+    "id": "products-05",
+    "family": "products",
+    "split": "dev",
+    "index": 5,
+    "variant": "failed",
+    "expected": "information_needed"
+  },
+  {
+    "id": "products-06",
+    "family": "products",
+    "split": "validation",
+    "index": 6,
+    "variant": "stale",
+    "expected": "information_needed"
+  },
+  {
+    "id": "products-07",
+    "family": "products",
+    "split": "validation",
+    "index": 7,
+    "variant": "gap",
+    "expected": "information_needed"
+  },
+  {
+    "id": "products-08",
+    "family": "products",
+    "split": "validation",
+    "index": 8,
+    "variant": "missing",
+    "expected": "information_needed"
+  },
+  {
+    "id": "products-09",
+    "family": "products",
+    "split": "holdout",
+    "index": 9,
+    "variant": "failed",
+    "expected": "information_needed"
+  },
+  {
+    "id": "products-10",
+    "family": "products",
+    "split": "holdout",
+    "index": 10,
+    "variant": "stale",
+    "expected": "information_needed"
+  },
+  {
+    "id": "products-11",
+    "family": "products",
+    "split": "holdout",
+    "index": 11,
+    "variant": "gap",
+    "expected": "information_needed"
+  },
+  {
+    "id": "state-00",
+    "family": "state",
+    "split": "dev",
+    "index": 0,
+    "variant": "monthly",
+    "expected": {
+      "income": 100000,
+      "expense": 12345,
+      "balance": 87655
+    }
+  },
+  {
+    "id": "state-01",
+    "family": "state",
+    "split": "dev",
+    "index": 1,
+    "variant": "annual",
+    "expected": {
+      "income": 100001,
+      "expense": 12346,
+      "balance": 87655
+    }
+  },
+  {
+    "id": "state-02",
+    "family": "state",
+    "split": "dev",
+    "index": 2,
+    "variant": "notes",
+    "expected": {
+      "income": 100002,
+      "expense": 12347,
+      "balance": 87655
+    }
+  },
+  {
+    "id": "state-03",
+    "family": "state",
+    "split": "dev",
+    "index": 3,
+    "variant": "future",
+    "expected": {
+      "income": 100003,
+      "expense": 12348,
+      "balance": 87655
+    }
+  },
+  {
+    "id": "state-04",
+    "family": "state",
+    "split": "dev",
+    "index": 4,
+    "variant": "monthly",
+    "expected": {
+      "income": 100004,
+      "expense": 12349,
+      "balance": 87655
+    }
+  },
+  {
+    "id": "state-05",
+    "family": "state",
+    "split": "dev",
+    "index": 5,
+    "variant": "annual",
+    "expected": {
+      "income": 100005,
+      "expense": 12350,
+      "balance": 87655
+    }
+  },
+  {
+    "id": "state-06",
+    "family": "state",
+    "split": "validation",
+    "index": 6,
+    "variant": "notes",
+    "expected": {
+      "income": 100006,
+      "expense": 12351,
+      "balance": 87655
+    }
+  },
+  {
+    "id": "state-07",
+    "family": "state",
+    "split": "validation",
+    "index": 7,
+    "variant": "future",
+    "expected": {
+      "income": 100007,
+      "expense": 12352,
+      "balance": 87655
+    }
+  },
+  {
+    "id": "state-08",
+    "family": "state",
+    "split": "validation",
+    "index": 8,
+    "variant": "monthly",
+    "expected": {
+      "income": 100008,
+      "expense": 12353,
+      "balance": 87655
+    }
+  },
+  {
+    "id": "state-09",
+    "family": "state",
+    "split": "holdout",
+    "index": 9,
+    "variant": "annual",
+    "expected": {
+      "income": 100009,
+      "expense": 12354,
+      "balance": 87655
+    }
+  },
+  {
+    "id": "state-10",
+    "family": "state",
+    "split": "holdout",
+    "index": 10,
+    "variant": "notes",
+    "expected": {
+      "income": 100010,
+      "expense": 12355,
+      "balance": 87655
+    }
+  },
+  {
+    "id": "state-11",
+    "family": "state",
+    "split": "holdout",
+    "index": 11,
+    "variant": "future",
+    "expected": {
+      "income": 100011,
+      "expense": 12356,
+      "balance": 87655
+    }
+  }
+]

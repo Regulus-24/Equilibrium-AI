@@ -1,0 +1,28 @@
+const {chromium}=require('C:/Users/Administrator/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const {spawn}=require('node:child_process');
+const fs=require('node:fs'),os=require('node:os'),path=require('node:path'),assert=require('node:assert/strict');
+const root=__dirname,dataDir=fs.mkdtempSync(path.join(os.tmpdir(),'equilibrium-insights-')),port=18142;
+const server=spawn('python',[path.join(root,'server.py'),'--port',String(port),'--data-dir',dataDir],{cwd:root,windowsHide:true,stdio:['ignore','pipe','pipe']});
+let browser;
+(async()=>{
+ await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('Server timeout')),10000);server.once('error',reject);server.once('exit',c=>reject(Error('Exit '+c)));server.stdout.once('data',()=>{clearTimeout(timer);resolve();});});
+ browser=await chromium.launch({headless:true,channel:'msedge'});const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('http://127.0.0.1:'+port);await page.locator('#entry-save:enabled').waitFor();
+ const post=(url,payload)=>page.evaluate(async({url,payload})=>{const token=(await(await fetch('/api/state')).json()).csrf_token;const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','X-Demo-Token':token},body:JSON.stringify(payload)});if(!r.ok)throw Error(await r.text());return r.json();},{url,payload});
+ for(const id of ['a','b'])await post('/api/ledger/save',{id,revision:0,kind:'expense',date:'2026-09-20',category:'餐饮',amount:'25.1',note:'<script>bad()</script>午餐'});
+ await page.locator('.nav[data-page="insights"]').click();await page.locator('#insight-period').fill('2026-09');await page.locator('#insight-form button[type=submit]').click();await page.waitForFunction(()=>document.getElementById('insight-report').textContent.includes('50.2'));
+ assert.match(await page.locator('#insight-flags').textContent(),/疑似重复记账/);assert.match(await page.locator('#insight-flags').textContent(),/<script>bad\(\)<\/script>/);
+ await page.locator('[data-decision="normal"]').click();await page.waitForFunction(()=>document.getElementById('insight-flags').textContent.includes('已标记正常'));
+ const download=page.waitForEvent('download');await page.locator('#insight-export').click();const d=await download;const file=path.join(dataDir,'report.json');await d.saveAs(file);assert.equal(JSON.parse(fs.readFileSync(file,'utf8')).facts.expense,5020);
+ await page.locator('#insight-available').fill('10000');await page.locator('#insight-reserve').fill('3000');await page.locator('#insight-amount').fill('7000.01');await page.locator('#insight-need').fill('2027-01-01');await page.locator('#insight-loss').selectOption('yes');await page.locator('#insight-confirm').check();await page.locator('#insight-compare').click();await page.waitForFunction(()=>document.getElementById('insight-preview').textContent.includes('暂不能'));
+ await page.locator('#insight-amount').fill('7000');await page.locator('#insight-compare').click();await page.waitForFunction(()=>document.getElementById('insight-preview').textContent.includes('金额条件通过'));
+ assert.equal(await page.locator('#insight-preview tbody tr').count(),5);assert.match(await page.locator('#insight-preview').textContent(),/资料不足/);
+ await post('/api/ledger/save',{id:'a',revision:1,kind:'expense',date:'2026-09-20',category:'餐饮',amount:'30',note:'修改'});
+ await page.waitForFunction(()=>document.getElementById('insight-status').textContent.includes('账本发生变化'));
+ assert.equal(await page.locator('#insight-compare').isDisabled(),true);assert.equal(await page.locator('#insight-export').isDisabled(),true);
+ await page.locator('#insight-form button[type=submit]').click();await page.waitForFunction(()=>document.getElementById('insight-report').textContent.includes('55.1'));
+ await page.locator('#insight-period').fill('2026');await page.locator('#insight-form button[type=submit]').click();await page.waitForFunction(()=>document.getElementById('insight-status').textContent.includes('2026-01-01'));
+ await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+ assert.equal(await page.locator('main #insights').count(),1);assert.deepEqual(errors,[]);
+ console.log('PASS: report evidence/export, escaped notes, persisted review feedback, cash limit, five real funds with unknown rules, stale report invalidation, annual view, mobile layout and no JS errors');
+})().catch(e=>{console.error(e);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();server.kill();if(path.dirname(path.resolve(dataDir))===path.resolve(os.tmpdir())&&path.basename(dataDir).startsWith('equilibrium-insights-'))fs.rmSync(dataDir,{recursive:true,force:true});});

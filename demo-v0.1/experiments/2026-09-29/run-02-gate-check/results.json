@@ -1,0 +1,2349 @@
+{
+  "summary": {
+    "experiment": "HZ-EXP-01-offline-v1",
+    "as_of": "2026-09-29",
+    "selected": "category-history-v2",
+    "fixture_sha256": "75db8037611af24237b779dfc3dbced5d1b509ac49a0dca937ae660f493aa888",
+    "source_sha256": "275366c61b07e9eed9dc85003ec60238cd8da8f844511fb42d4c4947c99d414c",
+    "code_sha256": {
+      "insights.py": "13536bf4eeceda2cd18d2d84b9028691aa16e8796cb767860d8100d8d34e7afe",
+      "funds.py": "cbdebb42c412a05eea21badaba60651a4ad772d8aac6e0f83944bfa947b823f9",
+      "experiment.py": "6dd5e872b1e4a20f27f97890a6136dbc90a5d2c3c1738e20026180fafb3b372c"
+    },
+    "dev": {
+      "fixed-v1": {
+        "passed": 20,
+        "total": 30,
+        "hard_errors": 0,
+        "detection": {
+          "amount": {
+            "tp": 0,
+            "fp": 4,
+            "fn": 2,
+            "precision": 0.0,
+            "recall": 0.0,
+            "sufficient_for_acceptance": false
+          },
+          "duplicate": {
+            "tp": 2,
+            "fp": 4,
+            "fn": 0,
+            "precision": 0.3333333333333333,
+            "recall": 1.0,
+            "sufficient_for_acceptance": false
+          }
+        }
+      },
+      "category-history-v2": {
+        "passed": 30,
+        "total": 30,
+        "hard_errors": 0,
+        "detection": {
+          "amount": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "sufficient_for_acceptance": false
+          },
+          "duplicate": {
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "sufficient_for_acceptance": false
+          }
+        }
+      }
+    },
+    "evaluation": {
+      "validation": {
+        "passed": 15,
+        "total": 15,
+        "hard_errors": 0,
+        "detection": {
+          "amount": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "sufficient_for_acceptance": false
+          },
+          "duplicate": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "sufficient_for_acceptance": false
+          }
+        }
+      },
+      "holdout": {
+        "passed": 15,
+        "total": 15,
+        "hard_errors": 0,
+        "detection": {
+          "amount": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "sufficient_for_acceptance": false
+          },
+          "duplicate": {
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "sufficient_for_acceptance": false
+          }
+        }
+      }
+    },
+    "overall": {
+      "passed": 60,
+      "total": 60,
+      "hard_errors": 0,
+      "detection": {
+        "amount": {
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "sufficient_for_acceptance": false
+        },
+        "duplicate": {
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "sufficient_for_acceptance": false
+        }
+      }
+    },
+    "repeatability": "3 identical replays",
+    "network_calls": 0,
+    "llm_calls": 0,
+    "engineering_gate": true,
+    "formal_acceptance": false,
+    "limitations": [
+      "开发者编写的60份合成任务，不能证明真实用户异常识别准确率。",
+      "每类留出正例少于10；指标只能作为探索结果，尚未达到正式验收样本量。",
+      "产品渠道/交易条件尚不齐全，全部保持资料不足；未生成订单。",
+      "未经过独立人工标注审核与5条人工端到端试用；不得宣称周实验全部验收完成。"
+    ]
+  },
+  "development": {
+    "fixed-v1": [
+      {
+        "id": "amount-00",
+        "family": "amount",
+        "split": "dev",
+        "passed": false,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": true,
+          "candidate_keys": [
+            "ad628162fd292e540ca1272bdf49cbe6580d53353ef2bf18ff6349f847985e57"
+          ]
+        }
+      },
+      {
+        "id": "amount-01",
+        "family": "amount",
+        "split": "dev",
+        "passed": false,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": true,
+          "candidate_keys": [
+            "967b37291e49fc48d2c908ea9ee3a4a2da820d8ff7de1b23fc8c80540c9363ff"
+          ]
+        }
+      },
+      {
+        "id": "amount-02",
+        "family": "amount",
+        "split": "dev",
+        "passed": false,
+        "hard_pass": true,
+        "details": {
+          "expected": true,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "amount-03",
+        "family": "amount",
+        "split": "dev",
+        "passed": false,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": true,
+          "candidate_keys": [
+            "14ee6fe5a1d0f7caeb60aa35c53bc66906a1136db03719999a3eaf2cf45d3a8e"
+          ]
+        }
+      },
+      {
+        "id": "amount-04",
+        "family": "amount",
+        "split": "dev",
+        "passed": false,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": true,
+          "candidate_keys": [
+            "9ca041b6463fc9131f9a39a6a001bc822915f2cfb8eea5e64426ef278bd68f2b"
+          ]
+        }
+      },
+      {
+        "id": "amount-05",
+        "family": "amount",
+        "split": "dev",
+        "passed": false,
+        "hard_pass": true,
+        "details": {
+          "expected": true,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "duplicate-00",
+        "family": "duplicate",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": true,
+          "predicted": true,
+          "candidate_keys": [
+            "5ac39433d0f022f42682d792bed3f20ec09425af13f18ca63b0e7ad745efb928"
+          ]
+        }
+      },
+      {
+        "id": "duplicate-01",
+        "family": "duplicate",
+        "split": "dev",
+        "passed": false,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": true,
+          "candidate_keys": [
+            "c304324ec6554d22c1234191636633a3cb9f6833dbc3160050532280df696e08"
+          ]
+        }
+      },
+      {
+        "id": "duplicate-02",
+        "family": "duplicate",
+        "split": "dev",
+        "passed": false,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": true,
+          "candidate_keys": [
+            "a7e3c8e0d1c48ab7fd7effb6f56796adb14f8a38480c6eda152330951c20cee4"
+          ]
+        }
+      },
+      {
+        "id": "duplicate-03",
+        "family": "duplicate",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": true,
+          "predicted": true,
+          "candidate_keys": [
+            "a7f777ad5dfb486e0d21b6f693e4b8bf64b59a07320c16b9fa3e366d363b8452"
+          ]
+        }
+      },
+      {
+        "id": "duplicate-04",
+        "family": "duplicate",
+        "split": "dev",
+        "passed": false,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": true,
+          "candidate_keys": [
+            "e71ec347aeee9a02b0298d299b0ab198e9b736240e62b9e58c7d861409214836"
+          ]
+        }
+      },
+      {
+        "id": "duplicate-05",
+        "family": "duplicate",
+        "split": "dev",
+        "passed": false,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": true,
+          "candidate_keys": [
+            "9a850070371839c4a6281acef54904a3d2250328b620864cf0d14f7d077e1497"
+          ]
+        }
+      },
+      {
+        "id": "funding-00",
+        "family": "funding",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "ready_for_comparison",
+          "reasons": [],
+          "limit_cents": 700000
+        }
+      },
+      {
+        "id": "funding-01",
+        "family": "funding",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "blocked",
+          "reasons": [
+            "拟投入必须大于0且不超过已确认现金扣除预留金额后的上限。"
+          ],
+          "limit_cents": 700000
+        }
+      },
+      {
+        "id": "funding-02",
+        "family": "funding",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "blocked",
+          "reasons": [
+            "拟投入必须大于0且不超过已确认现金扣除预留金额后的上限。"
+          ],
+          "limit_cents": 0
+        }
+      },
+      {
+        "id": "funding-03",
+        "family": "funding",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "blocked",
+          "reasons": [
+            "拟投入必须大于0且不超过已确认现金扣除预留金额后的上限。"
+          ],
+          "limit_cents": 100000
+        }
+      },
+      {
+        "id": "funding-04",
+        "family": "funding",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "blocked",
+          "reasons": [
+            "你不接受本金损失，本实验不生成基金投入方案。"
+          ],
+          "limit_cents": 90000
+        }
+      },
+      {
+        "id": "funding-05",
+        "family": "funding",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "请重新确认今天的现金和保留金额。"
+          ],
+          "limit_cents": null
+        }
+      },
+      {
+        "id": "products-00",
+        "family": "products",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+            "缺少收益历史。"
+          ],
+          "return_1": null
+        }
+      },
+      {
+        "id": "products-01",
+        "family": "products",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+            "行情来源未成功更新。"
+          ],
+          "return_1": "0.077101749173251596145712200"
+        }
+      },
+      {
+        "id": "products-02",
+        "family": "products",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+            "行情距离今天超过3个自然日，请核实披露；可能包含假期。"
+          ],
+          "return_1": "0.078755994136349521959192800"
+        }
+      },
+      {
+        "id": "products-03",
+        "family": "products",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。"
+          ],
+          "return_1": null
+        }
+      },
+      {
+        "id": "products-04",
+        "family": "products",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+            "缺少收益历史。"
+          ],
+          "return_1": null
+        }
+      },
+      {
+        "id": "products-05",
+        "family": "products",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+            "行情来源未成功更新。"
+          ],
+          "return_1": "0.077101749173251596145712200"
+        }
+      },
+      {
+        "id": "state-00",
+        "family": "state",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100000,
+            "expense": 12345,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      },
+      {
+        "id": "state-01",
+        "family": "state",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100001,
+            "expense": 12346,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      },
+      {
+        "id": "state-02",
+        "family": "state",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100002,
+            "expense": 12347,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      },
+      {
+        "id": "state-03",
+        "family": "state",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100003,
+            "expense": 12348,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      },
+      {
+        "id": "state-04",
+        "family": "state",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100004,
+            "expense": 12349,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      },
+      {
+        "id": "state-05",
+        "family": "state",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100005,
+            "expense": 12350,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      }
+    ],
+    "category-history-v2": [
+      {
+        "id": "amount-00",
+        "family": "amount",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "amount-01",
+        "family": "amount",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "amount-02",
+        "family": "amount",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": true,
+          "predicted": true,
+          "candidate_keys": [
+            "9ef5bd2aee3e1ea7f67d33183680096e64b282523fae8e76907641bc476a81bd"
+          ]
+        }
+      },
+      {
+        "id": "amount-03",
+        "family": "amount",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "amount-04",
+        "family": "amount",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "amount-05",
+        "family": "amount",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": true,
+          "predicted": true,
+          "candidate_keys": [
+            "3f881e5188904cb777a2bfba30115531d0c94830103ade6edbb42806a2b2666f"
+          ]
+        }
+      },
+      {
+        "id": "duplicate-00",
+        "family": "duplicate",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": true,
+          "predicted": true,
+          "candidate_keys": [
+            "5ac39433d0f022f42682d792bed3f20ec09425af13f18ca63b0e7ad745efb928"
+          ]
+        }
+      },
+      {
+        "id": "duplicate-01",
+        "family": "duplicate",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "duplicate-02",
+        "family": "duplicate",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "duplicate-03",
+        "family": "duplicate",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": true,
+          "predicted": true,
+          "candidate_keys": [
+            "a7f777ad5dfb486e0d21b6f693e4b8bf64b59a07320c16b9fa3e366d363b8452"
+          ]
+        }
+      },
+      {
+        "id": "duplicate-04",
+        "family": "duplicate",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "duplicate-05",
+        "family": "duplicate",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "funding-00",
+        "family": "funding",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "ready_for_comparison",
+          "reasons": [],
+          "limit_cents": 700000
+        }
+      },
+      {
+        "id": "funding-01",
+        "family": "funding",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "blocked",
+          "reasons": [
+            "拟投入必须大于0且不超过已确认现金扣除预留金额后的上限。"
+          ],
+          "limit_cents": 700000
+        }
+      },
+      {
+        "id": "funding-02",
+        "family": "funding",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "blocked",
+          "reasons": [
+            "拟投入必须大于0且不超过已确认现金扣除预留金额后的上限。"
+          ],
+          "limit_cents": 0
+        }
+      },
+      {
+        "id": "funding-03",
+        "family": "funding",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "blocked",
+          "reasons": [
+            "拟投入必须大于0且不超过已确认现金扣除预留金额后的上限。"
+          ],
+          "limit_cents": 100000
+        }
+      },
+      {
+        "id": "funding-04",
+        "family": "funding",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "blocked",
+          "reasons": [
+            "你不接受本金损失，本实验不生成基金投入方案。"
+          ],
+          "limit_cents": 90000
+        }
+      },
+      {
+        "id": "funding-05",
+        "family": "funding",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "请重新确认今天的现金和保留金额。"
+          ],
+          "limit_cents": null
+        }
+      },
+      {
+        "id": "products-00",
+        "family": "products",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+            "缺少收益历史。"
+          ],
+          "return_1": null
+        }
+      },
+      {
+        "id": "products-01",
+        "family": "products",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+            "行情来源未成功更新。"
+          ],
+          "return_1": "0.077101749173251596145712200"
+        }
+      },
+      {
+        "id": "products-02",
+        "family": "products",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+            "行情距离今天超过3个自然日，请核实披露；可能包含假期。"
+          ],
+          "return_1": "0.078755994136349521959192800"
+        }
+      },
+      {
+        "id": "products-03",
+        "family": "products",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。"
+          ],
+          "return_1": null
+        }
+      },
+      {
+        "id": "products-04",
+        "family": "products",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+            "缺少收益历史。"
+          ],
+          "return_1": null
+        }
+      },
+      {
+        "id": "products-05",
+        "family": "products",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+            "行情来源未成功更新。"
+          ],
+          "return_1": "0.077101749173251596145712200"
+        }
+      },
+      {
+        "id": "state-00",
+        "family": "state",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100000,
+            "expense": 12345,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      },
+      {
+        "id": "state-01",
+        "family": "state",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100001,
+            "expense": 12346,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      },
+      {
+        "id": "state-02",
+        "family": "state",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100002,
+            "expense": 12347,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      },
+      {
+        "id": "state-03",
+        "family": "state",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100003,
+            "expense": 12348,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      },
+      {
+        "id": "state-04",
+        "family": "state",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100004,
+            "expense": 12349,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      },
+      {
+        "id": "state-05",
+        "family": "state",
+        "split": "dev",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100005,
+            "expense": 12350,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      }
+    ]
+  },
+  "evaluation": {
+    "validation": [
+      {
+        "id": "amount-06",
+        "family": "amount",
+        "split": "validation",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "amount-07",
+        "family": "amount",
+        "split": "validation",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "amount-08",
+        "family": "amount",
+        "split": "validation",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": true,
+          "predicted": true,
+          "candidate_keys": [
+            "5880649717507bd131e96b1affbc5106d958bdd06376160c638a6d49a929f9c0"
+          ]
+        }
+      },
+      {
+        "id": "duplicate-06",
+        "family": "duplicate",
+        "split": "validation",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": true,
+          "predicted": true,
+          "candidate_keys": [
+            "d65c6c91b9e9ff10a12799458a3e75b0b7c345b75710cc7ff5beea5793c7483b"
+          ]
+        }
+      },
+      {
+        "id": "duplicate-07",
+        "family": "duplicate",
+        "split": "validation",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "duplicate-08",
+        "family": "duplicate",
+        "split": "validation",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "funding-06",
+        "family": "funding",
+        "split": "validation",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "ready_for_comparison",
+          "reasons": [],
+          "limit_cents": 641976
+        }
+      },
+      {
+        "id": "funding-07",
+        "family": "funding",
+        "split": "validation",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "blocked",
+          "reasons": [
+            "拟投入必须大于0且不超过已确认现金扣除预留金额后的上限。"
+          ],
+          "limit_cents": 641976
+        }
+      },
+      {
+        "id": "funding-08",
+        "family": "funding",
+        "split": "validation",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "blocked",
+          "reasons": [
+            "用款日期不能早于今天。"
+          ],
+          "limit_cents": 99998
+        }
+      },
+      {
+        "id": "products-06",
+        "family": "products",
+        "split": "validation",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+            "行情距离今天超过3个自然日，请核实披露；可能包含假期。"
+          ],
+          "return_1": "0.078755994136349521959192800"
+        }
+      },
+      {
+        "id": "products-07",
+        "family": "products",
+        "split": "validation",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。"
+          ],
+          "return_1": null
+        }
+      },
+      {
+        "id": "products-08",
+        "family": "products",
+        "split": "validation",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+            "缺少收益历史。"
+          ],
+          "return_1": null
+        }
+      },
+      {
+        "id": "state-06",
+        "family": "state",
+        "split": "validation",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100006,
+            "expense": 12351,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      },
+      {
+        "id": "state-07",
+        "family": "state",
+        "split": "validation",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100007,
+            "expense": 12352,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      },
+      {
+        "id": "state-08",
+        "family": "state",
+        "split": "validation",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100008,
+            "expense": 12353,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      }
+    ],
+    "holdout": [
+      {
+        "id": "amount-09",
+        "family": "amount",
+        "split": "holdout",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "amount-10",
+        "family": "amount",
+        "split": "holdout",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "amount-11",
+        "family": "amount",
+        "split": "holdout",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": true,
+          "predicted": true,
+          "candidate_keys": [
+            "e0f7cb7eb4fc4090b75c31f40e833257ff1cdac9281171f2a4cbebaa5f19ccb9"
+          ]
+        }
+      },
+      {
+        "id": "duplicate-09",
+        "family": "duplicate",
+        "split": "holdout",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": true,
+          "predicted": true,
+          "candidate_keys": [
+            "bcff39f8589250e866ef78764d07157b406dd19d29e5a159c9d7e0fda1a73ed6"
+          ]
+        }
+      },
+      {
+        "id": "duplicate-10",
+        "family": "duplicate",
+        "split": "holdout",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "duplicate-11",
+        "family": "duplicate",
+        "split": "holdout",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "expected": false,
+          "predicted": false,
+          "candidate_keys": []
+        }
+      },
+      {
+        "id": "funding-09",
+        "family": "funding",
+        "split": "holdout",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "ready_for_comparison",
+          "reasons": [],
+          "limit_cents": 1
+        }
+      },
+      {
+        "id": "funding-10",
+        "family": "funding",
+        "split": "holdout",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "blocked",
+          "reasons": [
+            "拟投入必须大于0且不超过已确认现金扣除预留金额后的上限。"
+          ],
+          "limit_cents": 0
+        }
+      },
+      {
+        "id": "funding-11",
+        "family": "funding",
+        "split": "holdout",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "请重新确认今天的现金和保留金额。"
+          ],
+          "limit_cents": null
+        }
+      },
+      {
+        "id": "products-09",
+        "family": "products",
+        "split": "holdout",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+            "行情来源未成功更新。"
+          ],
+          "return_1": "0.077101749173251596145712200"
+        }
+      },
+      {
+        "id": "products-10",
+        "family": "products",
+        "split": "holdout",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+            "行情距离今天超过3个自然日，请核实披露；可能包含假期。"
+          ],
+          "return_1": "0.078755994136349521959192800"
+        }
+      },
+      {
+        "id": "products-11",
+        "family": "products",
+        "split": "holdout",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "status": "information_needed",
+          "reasons": [
+            "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。"
+          ],
+          "return_1": null
+        }
+      },
+      {
+        "id": "state-09",
+        "family": "state",
+        "split": "holdout",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100009,
+            "expense": 12354,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      },
+      {
+        "id": "state-10",
+        "family": "state",
+        "split": "holdout",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100010,
+            "expense": 12355,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      },
+      {
+        "id": "state-11",
+        "family": "state",
+        "split": "holdout",
+        "passed": true,
+        "hard_pass": true,
+        "details": {
+          "facts": {
+            "income": 100011,
+            "expense": 12356,
+            "balance": 87655
+          },
+          "partial": true,
+          "evidence": [
+            "e",
+            "i"
+          ]
+        }
+      }
+    ]
+  },
+  "all_cases": [
+    {
+      "id": "amount-00",
+      "family": "amount",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "amount-01",
+      "family": "amount",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "amount-02",
+      "family": "amount",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": true,
+        "predicted": true,
+        "candidate_keys": [
+          "9ef5bd2aee3e1ea7f67d33183680096e64b282523fae8e76907641bc476a81bd"
+        ]
+      }
+    },
+    {
+      "id": "amount-03",
+      "family": "amount",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "amount-04",
+      "family": "amount",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "amount-05",
+      "family": "amount",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": true,
+        "predicted": true,
+        "candidate_keys": [
+          "3f881e5188904cb777a2bfba30115531d0c94830103ade6edbb42806a2b2666f"
+        ]
+      }
+    },
+    {
+      "id": "amount-06",
+      "family": "amount",
+      "split": "validation",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "amount-07",
+      "family": "amount",
+      "split": "validation",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "amount-08",
+      "family": "amount",
+      "split": "validation",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": true,
+        "predicted": true,
+        "candidate_keys": [
+          "5880649717507bd131e96b1affbc5106d958bdd06376160c638a6d49a929f9c0"
+        ]
+      }
+    },
+    {
+      "id": "amount-09",
+      "family": "amount",
+      "split": "holdout",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "amount-10",
+      "family": "amount",
+      "split": "holdout",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "amount-11",
+      "family": "amount",
+      "split": "holdout",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": true,
+        "predicted": true,
+        "candidate_keys": [
+          "e0f7cb7eb4fc4090b75c31f40e833257ff1cdac9281171f2a4cbebaa5f19ccb9"
+        ]
+      }
+    },
+    {
+      "id": "duplicate-00",
+      "family": "duplicate",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": true,
+        "predicted": true,
+        "candidate_keys": [
+          "5ac39433d0f022f42682d792bed3f20ec09425af13f18ca63b0e7ad745efb928"
+        ]
+      }
+    },
+    {
+      "id": "duplicate-01",
+      "family": "duplicate",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "duplicate-02",
+      "family": "duplicate",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "duplicate-03",
+      "family": "duplicate",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": true,
+        "predicted": true,
+        "candidate_keys": [
+          "a7f777ad5dfb486e0d21b6f693e4b8bf64b59a07320c16b9fa3e366d363b8452"
+        ]
+      }
+    },
+    {
+      "id": "duplicate-04",
+      "family": "duplicate",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "duplicate-05",
+      "family": "duplicate",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "duplicate-06",
+      "family": "duplicate",
+      "split": "validation",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": true,
+        "predicted": true,
+        "candidate_keys": [
+          "d65c6c91b9e9ff10a12799458a3e75b0b7c345b75710cc7ff5beea5793c7483b"
+        ]
+      }
+    },
+    {
+      "id": "duplicate-07",
+      "family": "duplicate",
+      "split": "validation",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "duplicate-08",
+      "family": "duplicate",
+      "split": "validation",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "duplicate-09",
+      "family": "duplicate",
+      "split": "holdout",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": true,
+        "predicted": true,
+        "candidate_keys": [
+          "bcff39f8589250e866ef78764d07157b406dd19d29e5a159c9d7e0fda1a73ed6"
+        ]
+      }
+    },
+    {
+      "id": "duplicate-10",
+      "family": "duplicate",
+      "split": "holdout",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "duplicate-11",
+      "family": "duplicate",
+      "split": "holdout",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "expected": false,
+        "predicted": false,
+        "candidate_keys": []
+      }
+    },
+    {
+      "id": "funding-00",
+      "family": "funding",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "ready_for_comparison",
+        "reasons": [],
+        "limit_cents": 700000
+      }
+    },
+    {
+      "id": "funding-01",
+      "family": "funding",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "blocked",
+        "reasons": [
+          "拟投入必须大于0且不超过已确认现金扣除预留金额后的上限。"
+        ],
+        "limit_cents": 700000
+      }
+    },
+    {
+      "id": "funding-02",
+      "family": "funding",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "blocked",
+        "reasons": [
+          "拟投入必须大于0且不超过已确认现金扣除预留金额后的上限。"
+        ],
+        "limit_cents": 0
+      }
+    },
+    {
+      "id": "funding-03",
+      "family": "funding",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "blocked",
+        "reasons": [
+          "拟投入必须大于0且不超过已确认现金扣除预留金额后的上限。"
+        ],
+        "limit_cents": 100000
+      }
+    },
+    {
+      "id": "funding-04",
+      "family": "funding",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "blocked",
+        "reasons": [
+          "你不接受本金损失，本实验不生成基金投入方案。"
+        ],
+        "limit_cents": 90000
+      }
+    },
+    {
+      "id": "funding-05",
+      "family": "funding",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "information_needed",
+        "reasons": [
+          "请重新确认今天的现金和保留金额。"
+        ],
+        "limit_cents": null
+      }
+    },
+    {
+      "id": "funding-06",
+      "family": "funding",
+      "split": "validation",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "ready_for_comparison",
+        "reasons": [],
+        "limit_cents": 641976
+      }
+    },
+    {
+      "id": "funding-07",
+      "family": "funding",
+      "split": "validation",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "blocked",
+        "reasons": [
+          "拟投入必须大于0且不超过已确认现金扣除预留金额后的上限。"
+        ],
+        "limit_cents": 641976
+      }
+    },
+    {
+      "id": "funding-08",
+      "family": "funding",
+      "split": "validation",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "blocked",
+        "reasons": [
+          "用款日期不能早于今天。"
+        ],
+        "limit_cents": 99998
+      }
+    },
+    {
+      "id": "funding-09",
+      "family": "funding",
+      "split": "holdout",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "ready_for_comparison",
+        "reasons": [],
+        "limit_cents": 1
+      }
+    },
+    {
+      "id": "funding-10",
+      "family": "funding",
+      "split": "holdout",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "blocked",
+        "reasons": [
+          "拟投入必须大于0且不超过已确认现金扣除预留金额后的上限。"
+        ],
+        "limit_cents": 0
+      }
+    },
+    {
+      "id": "funding-11",
+      "family": "funding",
+      "split": "holdout",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "information_needed",
+        "reasons": [
+          "请重新确认今天的现金和保留金额。"
+        ],
+        "limit_cents": null
+      }
+    },
+    {
+      "id": "products-00",
+      "family": "products",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "information_needed",
+        "reasons": [
+          "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+          "缺少收益历史。"
+        ],
+        "return_1": null
+      }
+    },
+    {
+      "id": "products-01",
+      "family": "products",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "information_needed",
+        "reasons": [
+          "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+          "行情来源未成功更新。"
+        ],
+        "return_1": "0.077101749173251596145712200"
+      }
+    },
+    {
+      "id": "products-02",
+      "family": "products",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "information_needed",
+        "reasons": [
+          "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+          "行情距离今天超过3个自然日，请核实披露；可能包含假期。"
+        ],
+        "return_1": "0.078755994136349521959192800"
+      }
+    },
+    {
+      "id": "products-03",
+      "family": "products",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "information_needed",
+        "reasons": [
+          "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。"
+        ],
+        "return_1": null
+      }
+    },
+    {
+      "id": "products-04",
+      "family": "products",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "information_needed",
+        "reasons": [
+          "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+          "缺少收益历史。"
+        ],
+        "return_1": null
+      }
+    },
+    {
+      "id": "products-05",
+      "family": "products",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "information_needed",
+        "reasons": [
+          "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+          "行情来源未成功更新。"
+        ],
+        "return_1": "0.077101749173251596145712200"
+      }
+    },
+    {
+      "id": "products-06",
+      "family": "products",
+      "split": "validation",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "information_needed",
+        "reasons": [
+          "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+          "行情距离今天超过3个自然日，请核实披露；可能包含假期。"
+        ],
+        "return_1": "0.078755994136349521959192800"
+      }
+    },
+    {
+      "id": "products-07",
+      "family": "products",
+      "split": "validation",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "information_needed",
+        "reasons": [
+          "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。"
+        ],
+        "return_1": null
+      }
+    },
+    {
+      "id": "products-08",
+      "family": "products",
+      "split": "validation",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "information_needed",
+        "reasons": [
+          "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+          "缺少收益历史。"
+        ],
+        "return_1": null
+      }
+    },
+    {
+      "id": "products-09",
+      "family": "products",
+      "split": "holdout",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "information_needed",
+        "reasons": [
+          "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+          "行情来源未成功更新。"
+        ],
+        "return_1": "0.077101749173251596145712200"
+      }
+    },
+    {
+      "id": "products-10",
+      "family": "products",
+      "split": "holdout",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "information_needed",
+        "reasons": [
+          "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。",
+          "行情距离今天超过3个自然日，请核实披露；可能包含假期。"
+        ],
+        "return_1": "0.078755994136349521959192800"
+      }
+    },
+    {
+      "id": "products-11",
+      "family": "products",
+      "split": "holdout",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "status": "information_needed",
+        "reasons": [
+          "当前理财通在售状态、起购金额、赎回到账及完整费用尚未核实。"
+        ],
+        "return_1": null
+      }
+    },
+    {
+      "id": "state-00",
+      "family": "state",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "facts": {
+          "income": 100000,
+          "expense": 12345,
+          "balance": 87655
+        },
+        "partial": true,
+        "evidence": [
+          "e",
+          "i"
+        ]
+      }
+    },
+    {
+      "id": "state-01",
+      "family": "state",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "facts": {
+          "income": 100001,
+          "expense": 12346,
+          "balance": 87655
+        },
+        "partial": true,
+        "evidence": [
+          "e",
+          "i"
+        ]
+      }
+    },
+    {
+      "id": "state-02",
+      "family": "state",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "facts": {
+          "income": 100002,
+          "expense": 12347,
+          "balance": 87655
+        },
+        "partial": true,
+        "evidence": [
+          "e",
+          "i"
+        ]
+      }
+    },
+    {
+      "id": "state-03",
+      "family": "state",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "facts": {
+          "income": 100003,
+          "expense": 12348,
+          "balance": 87655
+        },
+        "partial": true,
+        "evidence": [
+          "e",
+          "i"
+        ]
+      }
+    },
+    {
+      "id": "state-04",
+      "family": "state",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "facts": {
+          "income": 100004,
+          "expense": 12349,
+          "balance": 87655
+        },
+        "partial": true,
+        "evidence": [
+          "e",
+          "i"
+        ]
+      }
+    },
+    {
+      "id": "state-05",
+      "family": "state",
+      "split": "dev",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "facts": {
+          "income": 100005,
+          "expense": 12350,
+          "balance": 87655
+        },
+        "partial": true,
+        "evidence": [
+          "e",
+          "i"
+        ]
+      }
+    },
+    {
+      "id": "state-06",
+      "family": "state",
+      "split": "validation",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "facts": {
+          "income": 100006,
+          "expense": 12351,
+          "balance": 87655
+        },
+        "partial": true,
+        "evidence": [
+          "e",
+          "i"
+        ]
+      }
+    },
+    {
+      "id": "state-07",
+      "family": "state",
+      "split": "validation",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "facts": {
+          "income": 100007,
+          "expense": 12352,
+          "balance": 87655
+        },
+        "partial": true,
+        "evidence": [
+          "e",
+          "i"
+        ]
+      }
+    },
+    {
+      "id": "state-08",
+      "family": "state",
+      "split": "validation",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "facts": {
+          "income": 100008,
+          "expense": 12353,
+          "balance": 87655
+        },
+        "partial": true,
+        "evidence": [
+          "e",
+          "i"
+        ]
+      }
+    },
+    {
+      "id": "state-09",
+      "family": "state",
+      "split": "holdout",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "facts": {
+          "income": 100009,
+          "expense": 12354,
+          "balance": 87655
+        },
+        "partial": true,
+        "evidence": [
+          "e",
+          "i"
+        ]
+      }
+    },
+    {
+      "id": "state-10",
+      "family": "state",
+      "split": "holdout",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "facts": {
+          "income": 100010,
+          "expense": 12355,
+          "balance": 87655
+        },
+        "partial": true,
+        "evidence": [
+          "e",
+          "i"
+        ]
+      }
+    },
+    {
+      "id": "state-11",
+      "family": "state",
+      "split": "holdout",
+      "passed": true,
+      "hard_pass": true,
+      "details": {
+        "facts": {
+          "income": 100011,
+          "expense": 12356,
+          "balance": 87655
+        },
+        "partial": true,
+        "evidence": [
+          "e",
+          "i"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/equilibrium/bill-analysis-narrative-v1",
+  "title": "衡智账单分析自然语言层 v1",
+  "description": "由模型根据事实层生成的短摘要和建议；不得包含事实层没有的数字或证据。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "source_ledger_version", "summary", "insights"],
+  "properties": {
+    "contract_version": {"const": "bill-analysis-narrative-v1"},
+    "source_ledger_version": {"type": "string", "minLength": 1},
+    "summary": {"type": "string", "minLength": 1, "maxLength": 300},
+    "insights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "priority", "type", "certainty", "title", "body", "evidence_ids", "suggestion"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^insight-[a-zA-Z0-9-]{1,64}$"},
+          "priority": {"type": "integer", "minimum": 1},
+          "type": {
+            "enum": ["fact", "comparison", "large_expense_candidate", "duplicate_candidate", "information_needed"]
+          },
+          "certainty": {"enum": ["fact", "candidate", "information_needed"]},
+          "title": {"type": "string", "minLength": 1, "maxLength": 80},
+          "body": {"type": "string", "minLength": 1, "maxLength": 240},
+          "evidence_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "suggestion": {"type": ["string", "null"], "maxLength": 160}
+        }
+      }
+    }
+  }
+}

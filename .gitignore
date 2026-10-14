@@ -1,0 +1,23 @@
+# Local runtime state and user-entered ledger data.
+demo-v0.1/data/**
+!demo-v0.1/data/.gitkeep
+demo-v0.1/data-personal-*/
+
+# Large generated market snapshots used for local replay only.
+demo-v0.1/experiments/real-quotes-*.json
+
+# Python and editor caches.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.vscode/
+
+# Local credentials and environment files.
+.env
+.env.*
+!.env.example
+
+# Local logs and temporary files.
+*.log
+*.tmp

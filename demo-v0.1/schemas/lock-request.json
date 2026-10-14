@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "card_id"
+  ],
+  "properties": {
+    "card_id": {
+      "const": "demo-card-0428"
+    }
+  }
+}

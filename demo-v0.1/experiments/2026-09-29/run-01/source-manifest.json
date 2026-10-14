@@ -1,0 +1,55 @@
+{
+  "sources": {
+    "000343": {
+      "status": "ok",
+      "checked_at": "2026-09-29T19:25:08.951084+08:00",
+      "data_date": "2026-09-28",
+      "sha256": "3abdf5a9eadf347c5c852cfaf7c5ed2f2fffade8fd44da1260ac3fafa599c9d1",
+      "url": "https://fund.eastmoney.com/000343.html",
+      "provider": "天天基金公开行情（非腾讯接口）",
+      "corrections": 0,
+      "unchanged": false
+    },
+    "000359": {
+      "status": "ok",
+      "checked_at": "2026-09-29T19:25:08.951084+08:00",
+      "data_date": "2026-09-28",
+      "sha256": "bfecd608ff17443432488bd5633d717b97905e9c368fa7431f63ebac626f257e",
+      "url": "https://fund.eastmoney.com/000359.html",
+      "provider": "天天基金公开行情（非腾讯接口）",
+      "corrections": 0,
+      "unchanged": false
+    },
+    "000397": {
+      "status": "ok",
+      "checked_at": "2026-09-29T19:25:08.951084+08:00",
+      "data_date": "2026-09-28",
+      "sha256": "ab323f034027ae74dd56795de52434ab004a2873dc0a47f7205f5131e960c993",
+      "url": "https://fund.eastmoney.com/000397.html",
+      "provider": "天天基金公开行情（非腾讯接口）",
+      "corrections": 0,
+      "unchanged": false
+    },
+    "000389": {
+      "status": "ok",
+      "checked_at": "2026-09-29T19:25:08.951084+08:00",
+      "data_date": "2026-09-28",
+      "sha256": "35177521caf1125ff6ef8ff01df14352df90c5580c77301b3d3b0c05bb0c892b",
+      "url": "https://fund.eastmoney.com/000389.html",
+      "provider": "天天基金公开行情（非腾讯接口）",
+      "corrections": 0,
+      "unchanged": false
+    },
+    "000719": {
+      "status": "ok",
+      "checked_at": "2026-09-29T19:25:08.951084+08:00",
+      "data_date": "2026-09-28",
+      "sha256": "0f30eed4b5a2a8c5c0e35e594889ebe745f3ea5f6042c0a7f5b9cecbd499468e",
+      "url": "https://fund.eastmoney.com/000719.html",
+      "provider": "天天基金公开行情（非腾讯接口）",
+      "corrections": 0,
+      "unchanged": false
+    }
+  },
+  "source_sha256": "275366c61b07e9eed9dc85003ec60238cd8da8f844511fb42d4c4947c99d414c"
+}
