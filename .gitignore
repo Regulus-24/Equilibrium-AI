@@ -18,6 +18,13 @@ __pycache__/
 .env.*
 !.env.example
 
+# Personal reference materials; keep local, do not publish to the team repository.
+基础知识补充/
+比赛安排/
+腾讯理财通/
+记账常用分类/
+账单基础功能/
+
 # Local logs and temporary files.
 *.log
 *.tmp
