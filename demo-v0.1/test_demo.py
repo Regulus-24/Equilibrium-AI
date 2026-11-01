@@ -49,5 +49,35 @@ class DemoTests(unittest.TestCase):
         self.store.feedback({"useful":"maybe","note":"TEST ONLY"});self.store.reset()
         rows=json.loads((Path(self.tmp.name)/"feedback.json").read_text(encoding="utf8"))
         self.assertEqual(len(rows),1)
+    def test_cross_scene_summary_links_suspicious_transaction_to_card(self):
+        result=self.store.cross_scene_summary("2026-09")
+        self.assertEqual(result["action"],"preview_temporary_lock")
+        self.assertEqual(result["suspicious_transactions"][0]["id"],"T09")
+        self.assertEqual(result["card"]["status"],"ACTIVE")
+    def test_card_summary_exposes_billing_cycle_and_suspicious_rows(self):
+        result=self.store.card_summary("2026-09")
+        self.assertEqual(result["transaction_count"],8)
+        self.assertEqual(result["suspicious"][0]["id"],"T09")
+        self.assertEqual(result["card"]["payment_due_day"],10)
+        self.assertIn("next_payment_due",result)
+    def test_card_binding_is_separate_from_legacy_ledger_schema(self):
+        self.store.ledger.save({"id":"manual-1","revision":0,"kind":"expense","amount":"12.5","date":"2026-10-01","category":"餐饮","note":"午餐"})
+        result=self.store.save_binding({"entry_id":"manual-1","card_id":"demo-card-0428","card_last4":"0428","status":"linked","source":"manual"})
+        self.assertEqual(result["binding"]["card_last4"],"0428")
+        self.assertEqual(self.store.ledger.public()["entries"][0]["id"],"manual-1")
+    def test_case_state_machine_keeps_timeline_and_rejects_invalid_transition(self):
+        self.store.ledger.save({"id":"case-tx","revision":0,"kind":"expense","amount":"12.5","date":"2026-10-01","category":"餐饮","note":"待核实"})
+        version=self.store.ledger.public()["version"]
+        case=self.store.create_case({"period":"2026-10","ledger_version":version,"transaction_ids":["case-tx"]})
+        self.assertEqual(case["status"],"OPEN")
+        case=self.store.transition_case({"case_id":case["id"],"action":"review"})
+        self.assertEqual(case["status"],"UNDER_REVIEW")
+        with self.assertRaises(ValueError): self.store.transition_case({"case_id":case["id"],"action":"locked"})
+        case=self.store.transition_case({"case_id":case["id"],"action":"submit"})
+        self.assertEqual(case["status"],"SUBMITTED")
+        self.assertEqual(len(case["timeline"]),3)
+    def test_reminders_include_card_due(self):
+        result=self.store.reminders("2026-09")
+        self.assertEqual(result["period"],"2026-09")
+        self.assertEqual(result["items"][0]["type"],"card_payment_due")
 if __name__=="__main__":unittest.main(verbosity=2)
-

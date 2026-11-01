@@ -4,7 +4,7 @@ from pathlib import Path
 from unittest.mock import patch
 from ledger import Ledger
 from funds import FundTracker
-from insights import Insights, report, funding_check, candidates
+from insights import Insights, report, funding_check, candidates, recurring_patterns, cashflow_profile
 
 class InsightTests(unittest.TestCase):
     def setUp(self):
@@ -53,5 +53,22 @@ class InsightTests(unittest.TestCase):
         for period in ('2099-01','2026-13','0000','2026-9'):
             with self.assertRaises(ValueError):report([],period,date(2026,9,29),'v')
         r=report([],'2026',date(2026,9,29),'v');self.assertEqual(r['comparison']['expense']['delta'],None);self.assertEqual(r['facts']['balance'],0)
+
+    def test_recurring_patterns_use_merchant_and_cadence(self):
+        rows=[dict(id='a',kind='expense',date='2026-08-01',category='生活',cents=1290,note='视频会员；自动续费'),
+              dict(id='b',kind='expense',date='2026-09-01',category='生活',cents=1290,note='视频会员；自动续费'),
+              dict(id='c',kind='expense',date='2026-10-01',category='生活',cents=1290,note='视频会员；自动续费')]
+        found=recurring_patterns(rows,'2026-10-26')
+        self.assertEqual(len(found),1)
+        self.assertEqual(found[0]['reason']['occurrences'],3)
+        self.assertTrue(found[0]['reason']['same_amount'])
+
+    def test_cashflow_profile_is_reference_only(self):
+        rows=[dict(id='a',kind='income',date='2026-10-01',category='工资',cents=100000,note='工资'),
+              dict(id='b',kind='expense',date='2026-10-02',category='住房',cents=30000,note='房租'),
+              dict(id='c',kind='expense',date='2026-10-03',category='娱乐',cents=10000,note='电影')]
+        profile=cashflow_profile(rows,'2026-10-26')
+        self.assertEqual(profile['average_monthly_essential_cents'],30000)
+        self.assertEqual(profile['suggested_reserve_floor_cents'],90000)
 
 if __name__=='__main__':unittest.main()

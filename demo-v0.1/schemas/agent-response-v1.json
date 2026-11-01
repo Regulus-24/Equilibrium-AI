@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "contract_version", "message", "intent", "requires_confirmation",
+    "tool_calls", "evidence_ids", "source_versions", "missing_information", "answer"
+  ],
+  "properties": {
+    "contract_version": {"const": "equilibrium-agent-v1"},
+    "message": {"type": "string"},
+    "intent": {"enum": ["bill_analysis", "wealth_operation", "card_management", "cross_scene", "clarification"]},
+    "requires_confirmation": {"type": "boolean"},
+    "tool_calls": {"type": "array"},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}},
+    "source_versions": {"type": "object"},
+    "missing_information": {"type": "array", "items": {"type": "string"}},
+    "answer": {"type": "string"}
+  },
+  "additionalProperties": true
+}

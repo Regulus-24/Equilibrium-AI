@@ -62,7 +62,7 @@
   const change=cents=>cents===0?"持平":(cents>0?"增加 ":"减少 ")+money(Math.abs(cents));
   if(report.status!=="ready"){
    $("analysis-delta").textContent="暂不比较";
-   $("analysis-summary").textContent=report.status==="missing_previous"?"缺少上月记录，无法判断变化；上月显示的0仅表示没有录入。":"缺少本期记录，无法判断变化；本期显示的0仅表示没有录入。";
+   $("analysis-summary").innerHTML=report.status==="missing_previous"?"缺少上月记录，无法判断变化；上月显示的0仅表示没有录入。 <button class=\"quiet\" data-recovery=\"bookkeeping\" type=\"button\">去补充历史账单</button>":"缺少本期记录，无法判断变化；本期显示的0仅表示没有录入。 <button class=\"quiet\" data-recovery=\"bookkeeping\" type=\"button\">去补充账单</button>";
   }else{
    $("analysis-delta").textContent=change(value.delta);
    const rate=value.percent_basis_points===null?"上月已记录"+label+"为0，不计算变化百分比。":"相对上月整月的变化率为 "+(value.percent_basis_points>0?"+":"")+(value.percent_basis_points/100).toLocaleString("zh-CN",{maximumFractionDigits:2})+"%。";
@@ -106,8 +106,20 @@
   });
  }
  for(const id of ["stats-mode","stats-month","stats-year","stats-kind"])$(id).addEventListener("change",()=>{selectedCategory=null;comparisonCategory=null;render();});
+ $("analysis-summary").addEventListener("click",e=>{if(e.target.closest('[data-recovery="bookkeeping"]'))page('bookkeeping');});
  window.renderLedgerStats=data=>{
   if(!snapshot){$("stats-month").value=data.as_of.slice(0,7);$("stats-year").value=data.as_of.slice(0,4);}
-  snapshot=data;render();
+  snapshot=data;render();window.refreshBudgetUsage?.();
  };
+})();
+
+(() => {
+ const period=document.getElementById("budget-period"), total=document.getElementById("budget-total"), cats=document.getElementById("budget-categories"), form=document.getElementById("budget-form"); if(!form)return;
+ const cents=v=>{if(v===""||v==null)return null;if(!/^\d+(?:\.\d{1,2})?$/.test(v))throw Error("预算金额格式无效");const [a,b=""]=v.split(".");return Number(a)*100+Number((b+"00").slice(0,2));};
+ let version=1;
+ async function loadBudget(usageOnly=false){const p=period.value||new Date().toISOString().slice(0,7), d=await fetch("/api/budgets?period="+encodeURIComponent(p)).then(r=>r.json());if(!usageOnly){version=d.version;period.value=p;total.value=d.total_cents==null?"":(d.total_cents/100);cats.value=JSON.stringify(Object.fromEntries(Object.entries(d.category_budgets||{}).map(([k,v])=>[k,v/100])),null,2);}const over=d.over||d.categories.some(x=>x.over);const usage=d.used_bps==null?"—":(d.used_bps/100).toFixed(1)+"%";document.getElementById("budget-summary").innerHTML=`<p>已用 ${money(d.spent_cents)} · ${d.total_cents==null?"尚未设置月度总预算":"剩余 "+money(d.remaining_cents)+" · 使用率 "+usage}</p>${over?'<p class="fund-warning">已超预算：优先检查超支分类并调整后续可选支出。</p>':''}<div class="table-scroll"><table><thead><tr><th>分类</th><th>预算</th><th>已用</th><th>剩余</th></tr></thead><tbody>${d.categories.map(x=>`<tr><td>${esc(x.category)}</td><td>${x.budget_cents==null?'—':money(x.budget_cents)}</td><td>${money(x.spent_cents)}</td><td>${x.remaining_cents==null?'未设置':money(x.remaining_cents)}</td></tr>`).join('')}</tbody></table></div>`;}
+ window.refreshBudgetUsage=()=>loadBudget(true).catch(e=>document.getElementById("budget-status").textContent=e.message);
+ period.addEventListener("change",()=>loadBudget().catch(e=>document.getElementById("budget-status").textContent=e.message));
+ form.addEventListener("submit",async e=>{e.preventDefault();try{const raw=JSON.parse(cats.value||"{}");if(!raw||Array.isArray(raw)||typeof raw!=="object")throw Error("分类预算须为对象");const categories=Object.fromEntries(Object.entries(raw).map(([k,v])=>[k,cents(String(v))]));const out=await api("/api/budgets/save",{period:period.value,version,total_cents:cents(total.value),categories});version=out.version;document.getElementById("budget-status").textContent="预算已保存；历史支出仅用于计算已用比例，不会反推预算目标。";await loadBudget();}catch(err){document.getElementById("budget-status").textContent=err.message;}});
+ const now=new Date();period.value=now.toISOString().slice(0,7);loadBudget().catch(()=>{});
 })();

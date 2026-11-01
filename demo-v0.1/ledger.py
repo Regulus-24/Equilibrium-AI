@@ -20,6 +20,12 @@ class LedgerConflict(ValueError):
     pass
 
 
+def entry_fingerprint(row):
+    """Stable identity for imported transactions, independent of import row id."""
+    payload = {key: row.get(key) for key in ("kind", "date", "cents", "category", "note")}
+    return hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+
+
 def parse_amount(value):
     if not isinstance(value, str) or not re.fullmatch(r"[0-9]{1,9}(?:\.[0-9]{1,2})?", value):
         raise ValueError("金额须为正数，最多 9 位整数、2 位小数，不支持逗号或科学计数法。")
@@ -182,3 +188,45 @@ class Ledger:
             del data["entries"][payload["id"]]
             atomic_write_json(self.file, data)
             return {"deleted": True}
+
+    def import_rows(self, payload):
+        """Atomically append a previously reviewed spreadsheet preview."""
+        if not isinstance(payload, dict) or set(payload) != {"version", "rows", "confirm"} or payload["confirm"] is not True:
+            raise ValueError("请先预览并确认导入账单。")
+        if type(payload["version"]) is not str or not isinstance(payload["rows"], list) or not payload["rows"] or len(payload["rows"]) > 1000:
+            raise ValueError("导入预览已失效或记录数量无效。")
+        with self.lock:
+            data = self.read()
+            if payload["version"] != self.version(data):
+                raise LedgerConflict("预览后账本发生变化，请重新导入。")
+            existing = set(data["entries"])
+            existing_fingerprints = {entry_fingerprint(row) for row in data["entries"].values()}
+            additions = {}
+            addition_fingerprints = set()
+            for row in payload["rows"]:
+                if not isinstance(row, dict) or not set(row) <= {"id", "kind", "cents", "date", "category", "note", "card_last4"} or not {"id", "kind", "cents", "date", "category", "note"} <= set(row):
+                    raise ValueError("导入记录格式无效。")
+                if not isinstance(row["id"], str) or not re.fullmatch(r"[a-zA-Z0-9-]{1,64}", row["id"]) or row["id"] in existing or row["id"] in additions:
+                    raise ValueError("导入记录编号重复。")
+                if row["kind"] not in CATEGORIES or type(row["cents"]) is not int or not 1 <= row["cents"] <= 99999999999:
+                    raise ValueError("导入金额或收支类型无效。")
+                if not isinstance(row["date"], str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", row["date"]):
+                    raise ValueError("导入日期无效。")
+                parsed = date.fromisoformat(row["date"])
+                if parsed > date.today(): raise ValueError("导入文件包含未来日期。")
+                category = row["category"].strip() if isinstance(row["category"], str) else ""
+                if not 1 <= len(category) <= 20: raise ValueError("导入分类无效。")
+                if category not in CATEGORIES[row["kind"]]: category = "其他"
+                if not isinstance(row["note"], str) or len(row["note"]) > 500: raise ValueError("导入备注最多500字。")
+                if "card_last4" in row and row["card_last4"] and (not isinstance(row["card_last4"], str) or not row["card_last4"].isdigit() or len(row["card_last4"]) != 4):
+                    raise ValueError("卡片尾号必须是4位数字。")
+                fingerprint = entry_fingerprint(dict(row, category=category))
+                if fingerprint in existing_fingerprints or fingerprint in addition_fingerprints:
+                    raise LedgerConflict("导入记录已存在，请刷新预览后再试。")
+                addition_fingerprints.add(fingerprint)
+                stored = {key: row[key] for key in ("id", "kind", "cents", "date", "category", "note")}
+                additions[row["id"]] = dict(stored, category=category, revision=1)
+            if len(data["entries"]) + len(additions) > 10000: raise ValueError("账本记录数量已达上限。")
+            data["entries"].update(additions)
+            atomic_write_json(self.file, data)
+            return {"imported": len(additions), "version": self.version(data)}

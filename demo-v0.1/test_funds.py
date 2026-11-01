@@ -35,6 +35,11 @@ class FundTests(unittest.TestCase):
         self.settings();self.f.job_lock.acquire()
         self.assertFalse(self.f.sync());self.f.job_lock.release()
         self.f.sync();self.f.sync();self.assertEqual(self.f.public()["counts"]["000343"],1)
+    def test_source_freshness_is_exposed(self):
+        self.settings();self.f.sync()
+        source=self.f.public()["sources"]["000343"]
+        self.assertEqual(source["freshness"],"fresh")
+        self.assertEqual(source["age_days"],1)
     def test_corrected_quote(self):
         self.settings();self.f.sync();self.f.fetcher=lambda code:([quote("2026-09-28","2")],"corrected")
         self.f.sync();self.assertEqual(self.f.public()["sources"]["000343"]["corrections"],1)
@@ -46,6 +51,12 @@ class FundTests(unittest.TestCase):
         with self.assertRaises(ValueError):self.settings(watchlist=["000343","000343"])
         self.settings()
         with self.assertRaises(FundConflict):self.f.settings(dict(version=1,enabled=True,time="09:00",watchlist=["000343"]))
+    def test_custom_tencent_product_can_join_watchlist(self):
+        version=self.f.public()["version"]
+        out=self.f.add_product(dict(version=version,code="CUSTOM001",name="授权货币产品",provider="tencent_licensed"))
+        self.assertIn("CUSTOM001",{p["code"] for p in out["catalog"]})
+        configured=self.f.settings(dict(version=out["version"],enabled=False,time="09:00",watchlist=["CUSTOM001"],provider="tencent_licensed"))
+        self.assertEqual(configured["settings"]["provider"],"tencent_licensed")
     def test_identity_parser_and_no_execution(self):
         ts=int(datetime(2026,9,28,tzinfo=CST).timestamp()*1000)
         text='var fS_name="华夏财富宝货币A";var fS_code="000343";var Data_millionCopiesIncome='+json.dumps([[ts,0.2]])+';var Data_sevenDaysYearIncome='+json.dumps([[ts,0.7]])+';'

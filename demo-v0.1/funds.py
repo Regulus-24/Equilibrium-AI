@@ -10,6 +10,10 @@ from decimal import Decimal, InvalidOperation, ROUND_DOWN
 from pathlib import Path
 from urllib.request import Request, urlopen
 from vendor.io_utils import atomic_write_json, atomic_write_text
+from wealth_providers import TencentLicaitongProvider, provider_statuses
+
+def market_version(snapshot, today):
+    return hashlib.sha256(json.dumps({'sources':snapshot.get('sources',{}), 'quotes':snapshot.get('quotes',{}), 'products':snapshot.get('products',[]), 'as_of':today.isoformat()}, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
 CST = timezone(timedelta(hours=8))
 CATALOG = [
@@ -148,28 +152,57 @@ class FundTracker:
         self.path=self.root/"funds.json";self.lock=threading.RLock();self.job_lock=threading.Lock()
         self.fetcher=fetcher;self.clock=clock;self.stop=threading.Event()
         if not self.path.exists():
-            self.write(dict(version=1,settings=dict(enabled=False,time="09:00",timezone="Asia/Shanghai",watchlist=list(BY_CODE)),
+            self.write(dict(version=1,products=[],settings=dict(enabled=False,time="09:00",timezone="Asia/Shanghai",watchlist=list(BY_CODE),provider="eastmoney_public"),
                 schedule=dict(slot=None,attempts=0,next_retry=None,done=False),quotes={},sources={},trades=[],runs=[]))
     def read(self):return json.loads(self.path.read_text(encoding="utf-8"))
     def write(self,s):atomic_write_json(self.path,s)
+    def catalog(self):
+        s=self.read(); return CATALOG+s.get("products",[])
     def public(self):
         with self.lock:
             s=self.read()
-            return dict(version=s["version"],catalog=CATALOG,settings=s["settings"],schedule=s["schedule"],
-                sources=s["sources"],running=self.job_lock.locked(),runs=s["runs"][-10:],
+            sources=copy.deepcopy(s["sources"])
+            today=self.clock().date()
+            for source in sources.values():
+                try:
+                    age=(today-date.fromisoformat(source["data_date"])).days
+                    source["age_days"]=age
+                    source["freshness"]="fresh" if 0<=age<=3 else ("future" if age<0 else "stale")
+                except (KeyError,TypeError,ValueError):
+                    source["age_days"]=None;source["freshness"]="unknown"
+            return dict(market_version=market_version(s,today),version=s["version"],catalog=CATALOG+s.get("products",[]),providers=provider_statuses(),settings=s["settings"],schedule=s["schedule"],
+                sources=sources,running=self.job_lock.locked(),runs=s["runs"][-10:],
                 counts={c:len(v) for c,v in s["quotes"].items()})
     def settings(self,p):
-        if set(p)!={"version","enabled","time","watchlist"} or type(p["enabled"]) is not bool or type(p["version"]) is not int:
+        if set(p) not in ({"version","enabled","time","watchlist"},{"version","enabled","time","watchlist","provider"}) or type(p["enabled"]) is not bool or type(p["version"]) is not int:
             raise ValueError("设置参数无效。")
         if not isinstance(p["time"],str) or not re.fullmatch(r"(?:[01]\d|2[0-3]):[0-5]\d",p["time"]):raise ValueError("请输入有效的更新时间。")
         codes=p["watchlist"]
-        if not isinstance(codes,list) or len(codes)>5 or any(not isinstance(c,str) or c not in BY_CODE for c in codes) or len(set(codes))!=len(codes):
-            raise ValueError("首批支持目录中的五只基金，不允许重复。")
+        available={x["code"] for x in self.catalog()}
+        if not isinstance(codes,list) or len(codes)>50 or any(not isinstance(c,str) or c not in available for c in codes) or len(set(codes))!=len(codes):
+            raise ValueError("请选择已加入目录的产品，最多跟踪50只且不允许重复。")
         if p["enabled"] and not codes:raise ValueError("开启定时更新前至少添加一只基金。")
+        provider=p.get("provider","eastmoney_public")
+        if provider not in ("eastmoney_public","tencent_licensed"):raise ValueError("不支持的数据源。")
         with self.lock:
             s=self.read()
             if p["version"]!=s["version"]:raise FundConflict("设置已被其他页面修改，请刷新后重试。")
             s["settings"].update({k:p[k] for k in ("enabled","time","watchlist")})
+            s["settings"]["provider"]=provider
+            s["version"]+=1;self.write(s)
+        return self.public()
+    def add_product(self,p):
+        if not isinstance(p,dict) or set(p)!={"version","code","name","provider"} or type(p["version"]) is not int:
+            raise ValueError("产品参数无效。")
+        code,name,provider=p["code"],p["name"].strip(),p["provider"]
+        if not isinstance(code,str) or not re.fullmatch(r"[A-Za-z0-9_-]{1,32}",code) or not isinstance(name,str) or not 1<=len(name)<=80:
+            raise ValueError("产品代码或名称无效。")
+        if provider!="tencent_licensed":raise ValueError("自定义产品目前只支持腾讯理财通授权数据源。")
+        with self.lock:
+            s=self.read()
+            if p["version"]!=s["version"]:raise FundConflict("产品目录已变化，请刷新后重试。")
+            if any(x["code"]==code for x in CATALOG+s.get("products",[])):raise ValueError("产品代码已存在。")
+            s.setdefault("products",[]).append(dict(code=code,name=name,aliases=[name],provider=provider))
             s["version"]+=1;self.write(s)
         return self.public()
     def due(self):
@@ -210,10 +243,10 @@ class FundTracker:
                     s["schedule"]=dict(slot=key,attempts=(j["attempts"] if j["slot"]==key else 0)+1,
                         next_retry=(dt+timedelta(hours=1)).isoformat(),done=False)
                     self.write(s)
-            results=[]
+            results=[]; provider=cfg.get("provider","eastmoney_public")
             for code in codes:
                 try:
-                    rows,raw=self.fetcher(code)
+                    rows,raw=(TencentLicaitongProvider().fetch_history(code) if provider=="tencent_licensed" else self.fetcher(code))
                     if not rows:raise ValueError("来源没有历史记录。")
                     sha=hashlib.sha256(raw.encode()).hexdigest()
                     atomic_write_text(self.root/"fund-sources"/(code+".js.txt"),raw)
@@ -224,7 +257,8 @@ class FundTracker:
                         previous=s["sources"].get(code,{}).get("data_date")
                         newest=s["quotes"][code][-1]["date"]
                         s["sources"][code]=dict(status="ok",checked_at=stamp,data_date=newest,sha256=sha,
-                            url="https://fund.eastmoney.com/"+code+".html",provider="天天基金公开行情（非腾讯接口）",
+                            url=("授权腾讯理财通接口" if provider=="tencent_licensed" else "https://fund.eastmoney.com/"+code+".html"),
+                            provider=("腾讯理财通授权数据源" if provider=="tencent_licensed" else "天天基金公开行情（非腾讯接口）"),
                             corrections=corrections,unchanged=(previous==newest and corrections==0))
                         self.write(s)
                     results.append(dict(code=code,ok=True,date=newest,corrections=corrections))
@@ -240,16 +274,17 @@ class FundTracker:
             return True
         finally:self.job_lock.release()
     def detail(self,code,months,mode):
-        if code not in BY_CODE or mode not in ("actual","simulation"):raise ValueError("产品或记录类型无效。")
+        products={p["code"]:p for p in self.catalog()}
+        if code not in products or mode not in ("actual","simulation"):raise ValueError("产品或记录类型无效。")
         with self.lock:s=self.read()
         rows=s["quotes"].get(code,[]);trades=[t for t in s["trades"] if t["code"]==code]
         perf=performance(rows,months);portfolio=estimate(rows,trades,mode)
         if perf["start"]:portfolio["points"]=[p for p in portfolio["points"] if p["date"]>=perf["start"]]
-        return dict(product=BY_CODE[code],source=s["sources"].get(code),performance=perf,portfolio=portfolio,
+        return dict(product=products[code],source=s["sources"].get(code),performance=perf,portfolio=portfolio,
                     trades=[t for t in trades if t["mode"]==mode],latest=rows[-1] if rows else None)
     def save_trade(self,p):
         keys={"id","revision","code","mode","kind","status","date","amount","units","note"}
-        if set(p)!=keys or p["code"] not in BY_CODE or p["mode"] not in ("actual","simulation") or p["kind"] not in ("buy","sell") or p["status"] not in ("pending","confirmed"):
+        if set(p)!=keys or p["code"] not in {x["code"] for x in self.catalog()} or p["mode"] not in ("actual","simulation") or p["kind"] not in ("buy","sell") or p["status"] not in ("pending","confirmed"):
             raise ValueError("交易记录参数无效。")
         if not isinstance(p["id"],str) or not re.fullmatch(r"[a-zA-Z0-9-]{1,64}",p["id"]) or type(p["revision"]) is not int:raise ValueError("记录版本无效。")
         if not isinstance(p["note"],str) or len(p["note"])>500:raise ValueError("备注最多500字。")

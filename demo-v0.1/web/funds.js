@@ -4,26 +4,34 @@
  let overview=null,detail=null,months=1,editing=null,requestSeq=0,busy=false,settingsDirty=false,settingsVersion=null,draftId=null;
  const num=(v,d=4)=>v===null||v===undefined?'—':Number(v).toLocaleString('zh-CN',{maximumFractionDigits:d});
  const names={actual:'实际手动记录',simulation:'模拟记录'};
- function error(e){node('fund-error').textContent=e.message||String(e);node('fund-error').hidden=false;}
+ function error(e){const message=e.message||String(e);node('fund-error').textContent=message;node('fund-error').hidden=false;window.reportSystemStatus?.('行情状态',message,'funds','重试行情更新');}
  function selected(){return node('fund-select').value;}
  async function refreshOverview(initial=false){
   overview=await api('/api/funds');
-  if(initial){
+  const sourceList=overview.settings.watchlist.map(code=>overview.sources[code]);
+  const allFailed=sourceList.length>0&&sourceList.every(s=>s?.status==='error');
+  if(allFailed){window.reportSystemStatus?.('行情全部失败','全部行情来源更新失败，已保留历史数据。','funds','重试行情更新');node('fund-error').innerHTML='全部行情来源更新失败，已保留历史数据。<button class="quiet" id="fund-retry" type="button">重试更新</button>';node('fund-error').hidden=false;node('fund-retry').onclick=async()=>{node('fund-retry').disabled=true;try{await api('/api/funds/sync',{confirm:true});await refreshOverview();}catch(e){error(e);}finally{node('fund-retry')?.removeAttribute('disabled');}};}else if(node('fund-error').querySelector('#fund-retry')){node('fund-error').hidden=true;node('fund-error').textContent='';}
+  const selectedCode=node('fund-select').value;
+  const catalogCodes=[...node('fund-select').options].map(o=>o.value);
+  if(initial || overview.catalog.some(f=>!catalogCodes.includes(f.code))){
    node('fund-select').innerHTML=overview.catalog.map(f=>`<option value="${esc(f.code)}">${esc(f.name)} · ${esc(f.code)}</option>`).join('');
    node('fund-watchlist').innerHTML=overview.catalog.map(f=>`<label><input type="checkbox" value="${esc(f.code)}">${esc(f.name)}</label>`).join('');
    node('fund-watchlist').addEventListener('change',()=>settingsDirty=true);
+   if(selectedCode && overview.catalog.some(f=>f.code===selectedCode))node('fund-select').value=selectedCode;
   }
   if(!settingsDirty){
    settingsVersion=overview.version;
-   node('fund-schedule-time').value=overview.settings.time;node('fund-schedule-enabled').checked=overview.settings.enabled;
+   node('fund-schedule-time').value=overview.settings.time;node('fund-schedule-enabled').checked=overview.settings.enabled;node('fund-provider').value=overview.settings.provider||'eastmoney_public';
    node('fund-watchlist').querySelectorAll('input').forEach(n=>n.checked=overview.settings.watchlist.includes(n.value));
   }
+  const tencent=overview.providers?.find(p=>p.name==='tencent_licensed'); node('fund-product-status').textContent=tencent?.message||'';
   node('fund-sync').disabled=overview.running;
   node('fund-sync').textContent=overview.running?'正在联网更新…':'立即更新已跟踪产品';
   node('fund-schedule-state').textContent=(overview.settings.enabled?`已启用：每天北京时间 ${overview.settings.time}`:'定时更新未开启')+'。由衡智服务运行；浏览器关闭不影响，电脑或服务关闭则暂停，重启后补做当日错过的更新。';
   node('fund-cards').innerHTML=overview.catalog.map(f=>{
    const s=overview.sources[f.code],watched=overview.settings.watchlist.includes(f.code);
-   return `<div class="fund-card"><strong>${esc(f.name)} · ${f.code}</strong><p>${watched?'跟踪中':'已移出定时跟踪，历史保留'}</p><p>收益日期：${esc(s?.data_date||'尚无数据')}</p><p>读取状态：${s?.status==='ok'?'来源读取成功':s?.status==='error'?'更新失败，保留旧数据':'待首次更新'}</p><p class="caption">${s?.checked_at?'最近检查 '+esc(new Date(s.checked_at).toLocaleString('zh-CN')):''}</p>${s?.error?`<p class="caption">${esc(s.error)}</p>`:''}</div>`;
+   const freshness=s?.freshness==='stale'?'数据已超过3天，请核实':s?.freshness==='fresh'?'数据新鲜度正常':s?.freshness==='future'?'数据日期异常':'尚无新鲜度判断';
+   return `<div class="fund-card"><strong>${esc(f.name)} · ${f.code}</strong><p>${watched?'跟踪中':'已移出定时跟踪，历史保留'}</p><p>收益日期：${esc(s?.data_date||'尚无数据')} · ${freshness}</p><p>读取状态：${s?.status==='ok'?'来源读取成功':s?.status==='error'?'更新失败，保留旧数据':'待首次更新'}</p><p class="caption">${s?.checked_at?'最近检查 '+esc(new Date(s.checked_at).toLocaleString('zh-CN')):''}</p>${s?.error?`<p class="caption">${esc(s.error)}</p>`:''}</div>`;
   }).join('');
   node('fund-runs').innerHTML=overview.runs.slice().reverse().map(r=>`<p>${esc(new Date(r.at).toLocaleString('zh-CN'))} · ${r.trigger==='scheduled'?'服务端定时':'手动'} · 成功 ${r.results.filter(x=>x.ok).length}/${r.results.length}</p>`).join('')||'<p>尚无更新记录。</p>';
  }
@@ -70,9 +78,10 @@
   node('fund-chart').querySelectorAll('[data-trade]').forEach(el=>{const show=()=>{const t=detail.trades.find(r=>r.id===el.dataset.trade);node('fund-chart-readout').textContent=`${names[t.mode]} · ${t.date} · ${t.kind==='buy'?'买入':'卖出'} · ${t.status==='pending'?'待确认':'已确认'} · 现金${t.amount}元 / ${t.units}份 · ${t.note}`;};el.addEventListener('focus',show);el.addEventListener('click',show);});
  }
  function clearForm(){editing=null;draftId=crypto.randomUUID();node('fund-trade-form').reset();node('fund-trade-date').value=new Date().toLocaleDateString('en-CA');node('fund-trade-cancel').hidden=true;node('fund-trade-submit').textContent='保存记录';}
- node('fund-settings').addEventListener('submit',async e=>{e.preventDefault();try{await api('/api/funds/settings',{version:settingsVersion,enabled:node('fund-schedule-enabled').checked,time:node('fund-schedule-time').value,watchlist:[...node('fund-watchlist').querySelectorAll('input:checked')].map(n=>n.value)});settingsDirty=false;await refreshOverview();node('fund-error').hidden=true;}catch(err){error(err);}});
- ['fund-schedule-time','fund-schedule-enabled'].forEach(id=>node(id).addEventListener('change',()=>settingsDirty=true));
+ node('fund-settings').addEventListener('submit',async e=>{e.preventDefault();try{await api('/api/funds/settings',{version:settingsVersion,enabled:node('fund-schedule-enabled').checked,time:node('fund-schedule-time').value,watchlist:[...node('fund-watchlist').querySelectorAll('input:checked')].map(n=>n.value),provider:node('fund-provider').value});settingsDirty=false;await refreshOverview();node('fund-error').hidden=true;}catch(err){error(err);}});
+ ['fund-schedule-time','fund-schedule-enabled','fund-provider'].forEach(id=>node(id).addEventListener('change',()=>settingsDirty=true));
  node('fund-sync').addEventListener('click',async()=>{try{await api('/api/funds/sync',{confirm:true});await refreshOverview();}catch(e){error(e);}});
+ node('fund-product-form').addEventListener('submit',async e=>{e.preventDefault();const btn=e.submitter;btn.disabled=true;try{const out=await api('/api/funds/product/add',{version:settingsVersion,code:node('fund-product-code').value.trim(),name:node('fund-product-name').value.trim(),provider:'tencent_licensed'});overview=out;settingsVersion=out.version;node('fund-product-code').value='';node('fund-product-name').value='';settingsDirty=false;await refreshOverview();node('fund-product-status').textContent='自定义产品已加入目录；配置授权接口后即可更新。';}catch(err){error(err);}finally{btn.disabled=false;}});
  ['fund-select','fund-mode'].forEach(id=>node(id).addEventListener('change',()=>{clearForm();loadDetail().catch(error);}));
  node('fund-metric').addEventListener('change',()=>detail&&renderChart());
  document.querySelectorAll('[data-fund-months]').forEach(btn=>btn.addEventListener('click',()=>{months=Number(btn.dataset.fundMonths);document.querySelectorAll('[data-fund-months]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));loadDetail().catch(error);}));
@@ -84,7 +93,7 @@
  node('fund-trades').addEventListener('click',async e=>{
   const edit=e.target.closest('[data-edit]'),del=e.target.closest('[data-delete]');
   if(edit){editing=detail.trades.find(t=>t.id===edit.dataset.edit);const t=editing;node('fund-trade-kind').value=t.kind;node('fund-trade-status').value=t.status;node('fund-trade-date').value=t.date;node('fund-trade-amount').value=t.amount;node('fund-trade-units').value=t.units;node('fund-trade-note').value=t.note;node('fund-trade-cancel').hidden=false;node('fund-trade-submit').textContent='保存修改';}
-  if(del&&confirm('仅删除这条本地记录？这不会撤销真实交易。')){const t=detail.trades.find(t=>t.id===del.dataset.delete);try{await api('/api/funds/trade/delete',{id:t.id,revision:t.revision,mode:t.mode});clearForm();await loadDetail();}catch(err){error(err);}}
+  if(del&&await confirmAction('仅删除这条本地记录？这不会撤销真实交易。')){const t=detail.trades.find(t=>t.id===del.dataset.delete);try{await api('/api/funds/trade/delete',{id:t.id,revision:t.revision,mode:t.mode});clearForm();await loadDetail();}catch(err){error(err);}}
  });
  refreshOverview(true).then(()=>{clearForm();return loadDetail();}).catch(error);
  setInterval(async()=>{if(document.hidden||node('fundtracking').hidden||busy)return;try{await refreshOverview();await loadDetail();}catch(e){error(e);}},5000);

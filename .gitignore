@@ -28,3 +28,13 @@ __pycache__/
 # Local logs and temporary files.
 *.log
 *.tmp
+
+# Local QA data, exports and fault-injection artifacts.
+demo-v0.1/data-*/
+demo-v0.1/test-data/
+demo-v0.1/.test*/
+*.xlsx
+*.csv
+*.ics
+*.pem
+*.key
